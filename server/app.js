@@ -1,21 +1,39 @@
-// Importování Express
 const express = require('express');
+const session = require('express-session');
+const userRoutes = require('./routes/users.js');
+const defaultRoutes = require('./routes/default.js');
+const passport = require('passport');
+require('./utils/passport.js')(passport);
 
-// Vytvoøení Express aplikace
 const app = express();
 
-// Middleware pro zpracování JSON požadavkù
 app.use(express.json());
 
-// Základní route
-app.get('/', (req, res) => {
-    res.send('Vítejte v mé Node.js aplikaci s Express!');
+app.use(session({
+    secret: 'tajnÃ½_klÃ­Ä',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use((req, res, next) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    next();
 });
 
-// Nastavení portu
+app.get('/', (req, res) => {
+    res.send('VÃ­tejte v mÃ© Node.js aplikaci s Express!');
+});
+
+app.use('/users', userRoutes);
+app.use('/', defaultRoutes);
+
+// NastavenÃ­ portu
 const PORT = process.env.PORT || 3001;
 
-// Spuštìní serveru
+// SpuÅ¡tÄ›nÃ­ serveru
 app.listen(PORT, () => {
-    console.log(`Server bìží na portu ${PORT}`);
+    console.log(`Server bÄ›Å¾Ã­ na portu ${PORT}`);
 });
