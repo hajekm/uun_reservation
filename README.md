@@ -11,4 +11,4 @@ How to run:
 5. Run `npm install`
 6. Run `npm run generate` to generate your database schema and demo data
 7. Run `npm run test` to run test suite
-8. Run `npm start` to start the app
+8. Run `npm start` to start the app (server should be accessible at reservations.echovo.cz:3001)
