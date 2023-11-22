@@ -1,61 +1,43 @@
-const mongoose = require('mongoose');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require("../middleware/sequelize.js");
+const UserRole = require("./user_role");
 
-const userSchema = new mongoose.Schema({
+class User extends Model { }
+
+User.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    role_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'user_role',
+            key: 'id'
+        }
+    },
     username: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
+        type: DataTypes.STRING,
+        allowNull: false
     },
     email: {
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
         unique: true,
-        trim: true
+        allowNull: false
     },
     password: {
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: true
     }
+}, {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    timestamps: false 
 });
 
-userSchema.statics.createUser = async function (userData) {
-    try {
-        const user = new this(userData);
-        await user.save();
-        return user;
-    } catch (error) {
-        throw error;
-    }
-};
-
-userSchema.statics.getUserById = async function (id) {
-    try {
-        const user = await this.findById(id);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-};
-
-userSchema.statics.updateUser = async function (id, updateData) {
-    try {
-        const user = await this.findByIdAndUpdate(id, updateData, { new: true });
-        return user;
-    } catch (error) {
-        throw error;
-    }
-};
-
-userSchema.statics.deleteUser = async function (id) {
-    try {
-        const user = await this.findByIdAndDelete(id);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const User = mongoose.model('User', userSchema);
+User.belongsTo(UserRole, { foreignKey: 'role_id' });
 
 module.exports = User;

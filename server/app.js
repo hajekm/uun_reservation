@@ -1,9 +1,11 @@
 const express = require('express');
 const session = require('express-session');
-const userRoutes = require('./routes/users.js');
+const usersRoutes = require('./routes/users.js');
+const roomsRoutes = require('./routes/rooms.js');
 const defaultRoutes = require('./routes/default.js');
+const reservationsRoutes = require('./routes/reservations.js');
 const passport = require('passport');
-require('./utils/passport.js')(passport);
+require('./middleware/passport.js')(passport);
 
 const app = express();
 
@@ -12,7 +14,7 @@ app.use(express.json());
 app.use(session({
     secret: 'tajný_klíč',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());
@@ -24,16 +26,12 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Vítejte v mé Node.js aplikaci s Express!');
+    res.send('Homepage');
 });
 
-app.use('/users', userRoutes);
+app.use('/users', usersRoutes);
+app.use('/rooms', roomsRoutes);
+app.use('/reservations', reservationsRoutes);
 app.use('/', defaultRoutes);
 
-// Nastavení portu
-const PORT = process.env.PORT || 3001;
-
-// Spuštění serveru
-app.listen(PORT, () => {
-    console.log(`Server běží na portu ${PORT}`);
-});
+module.exports = app;

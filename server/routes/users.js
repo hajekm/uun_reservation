@@ -1,26 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-const ensureAuthenticated = require('../middleware/authenticated.js');
+const user = require('../controllers/userController.js');
+const { ensureAuthenticated, isAdmin, isManager } = require('../middleware/authenticated.js');
+const validator = require('../middleware/validator.js');
 
-router.get('/list', ensureAuthenticated, (req, res) => {
-    res.send('Seznam všech uživatelů (přihlášeno jako ' + req.user.displayName + ' a ' + req.user.email + ' přes google)');
-});
+router.get('/list', isAdmin, user.getAllUsers);
 
-router.post('/', (req, res) => {
-    res.send('Nový uživatel přidán');
-});
+router.put('/:userId',
+    validator.updateUserValidationRules,
+    validator.validate,
+    isAdmin,
+    user.updateUser
+);
 
-router.get('/:userId', ensureAuthenticated, (req, res) => {
-    res.send(`Získání uživatele s ID: ${req.params.userId}`);
-});
+router.get('/:userId', isManager || isAdmin, user.getUserById);
 
-router.put('/:userId', ensureAuthenticated, (req, res) => {
-    res.send(`Uživatel s ID: ${req.params.userId} aktualizován`);
-});
+router.post('/create',
+    validator.createUserValidationRules,
+    validator.validate,
+    isAdmin,
+    user.createUser
+);
 
-router.delete('/:userId', ensureAuthenticated, (req, res) => {
-    res.send(`Uživatel s ID: ${req.params.userId} odstraněn`);
-});
+router.delete('/:userId', isAdmin, user.deleteUser);
 
 module.exports = router;
