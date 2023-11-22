@@ -1,8 +1,44 @@
 function ensureAuthenticated(req, res, next) {
+    if (process.env.NODE_ENV === 'googleAuthOverride') {
+        return next();
+    } 
+
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/auth');
+    req.session.returnTo = req.originalUrl;
+    return res.redirect('/auth');
 }
 
-module.exports = ensureAuthenticated;
+function isManager(req, res, next) {
+    if (process.env.NODE_ENV === 'googleAuthOverride') {
+        return next();
+    }
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl;
+        return res.redirect('/auth');
+    }
+
+    if (req.user.role_id == 2) {
+        return next();
+    }
+    return res.redirect('/');
+}
+
+function isAdmin(req, res, next) {
+    if (process.env.NODE_ENV === 'googleAuthOverride') {
+        return next();
+    }
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl;
+        return res.redirect('/auth');
+    }
+
+    if (req.user.role_id == 1) {
+        return next();
+    }
+
+    return res.redirect('/');
+}
+
+module.exports = { ensureAuthenticated, isAdmin, isManager };
