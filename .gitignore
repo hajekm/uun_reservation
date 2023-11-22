@@ -131,4 +131,4 @@ dist
 
 .vs
 
-.server/config/config.js
+./server/config/config.js
