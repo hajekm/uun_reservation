@@ -6,8 +6,13 @@ const validator = require('../middleware/validator.js');
 
 /**
  * @swagger
+ * tags:
+ *   - name: Rooms
+ *     description: Operations related to rooms
+ *
  * /rooms/list:
  *   get:
+ *     tags: [Rooms]
  *     summary: Get a list of all rooms
  *     responses:
  *       200:
@@ -21,6 +26,7 @@ router.get('/list', rooms.getAllRooms);
  * @swagger
  * /rooms/{roomId}:
  *   put:
+ *     tags: [Rooms]
  *     summary: Update a room by ID
  *     parameters:
  *       - in: path
@@ -76,6 +82,7 @@ router.put('/:roomId',
  * @swagger
  * /rooms/{roomId}:
  *   get:
+ *     tags: [Rooms]
  *     summary: Get a room by its ID
  *     parameters:
  *       - in: path
@@ -98,6 +105,7 @@ router.get('/:roomId', rooms.getRoomById);
  * @swagger
  * /rooms/create:
  *   post:
+ *     tags: [Rooms]
  *     summary: Create a new room
  *     requestBody:
  *       required: true
@@ -148,6 +156,7 @@ router.post('/create',
  * @swagger
  * /rooms/{roomId}:
  *   delete:
+ *     tags: [Rooms]
  *     summary: Delete a room by ID
  *     parameters:
  *       - in: path

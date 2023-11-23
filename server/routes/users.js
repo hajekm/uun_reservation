@@ -6,8 +6,13 @@ const validator = require('../middleware/validator.js');
 
 /**
  * @swagger
+ * tags:
+ *   - name: Users
+ *     description: Operations related to users
+ *
  * /userslist:
  *   get:
+ *     tags: [Users]
  *     summary: Get a list of all users
  *     security:
  *       - adminAuth: []
@@ -25,6 +30,7 @@ router.get('/list', isAdmin, user.getAllUsers);
  * @swagger
  * /users/{userId}:
  *   put:
+ *     tags: [Users]
  *     summary: Update a user by ID
  *     security:
  *       - adminAuth: []
@@ -73,6 +79,7 @@ router.put('/:userId',
  * @swagger
  * /users/{userId}:
  *   get:
+ *     tags: [Users]
  *     summary: Get a user by their ID
  *     security:
  *       - adminAuth: []
@@ -97,6 +104,7 @@ router.get('/:userId', isManager || isAdmin, user.getUserById);
  * @swagger
  * /users/create:
  *   post:
+ *     tags: [Users]
  *     summary: Create a new user
  *     security:
  *       - adminAuth: []
@@ -139,6 +147,7 @@ router.post('/create',
  * @swagger
  * /users/{userId}:
  *   delete:
+ *     tags: [Users]
  *     summary: Delete a user by ID
  *     security:
  *       - adminAuth: []

@@ -6,8 +6,13 @@ const validator = require('../middleware/validator.js');
 
 /**
  * @swagger
+ * tags:
+ *   - name: Reservations
+ *     description: Operations related to reservations
+ *
  * /reservations/list:
  *   get:
+ *     tags: [Reservations]
  *     summary: Retrieve a list of all reservations
  *     responses:
  *       200:
@@ -21,6 +26,7 @@ router.get('/list', isAdmin || isManager ,reservations.getAllReservations);
  * @swagger
  * /reservations/create:
  *   post:
+ *     tags: [Reservations]
  *     summary: Create a new reservation
  *     requestBody:
  *       required: true
@@ -68,6 +74,7 @@ router.post('/create',
  * @swagger
  * /reservations/{reservationId}:
  *   get:
+ *     tags: [Reservations]
  *     summary: Get a reservation by its ID
  *     parameters:
  *       - in: path
@@ -90,6 +97,7 @@ router.get('/:reservationId', ensureAuthenticated, reservations.getReservationBy
  * @swagger
  * /reservations/{reservationId}:
  *   put:
+ *     tags: [Reservations]
  *     summary: Update a reservation
  *     parameters:
  *       - in: path
@@ -139,6 +147,7 @@ router.put('/:reservationId',
  * @swagger
  * /reservations/state/{reservationId}:
  *   put:
+ *     tags: [Reservations]
  *     summary: Set the state of a reservation
  *     parameters:
  *       - in: path
@@ -176,6 +185,7 @@ router.put('/state/:reservationId',
  * @swagger
  * /reservations/{reservationId}:
  *   delete:
+ *     tags: [Reservations]
  *     summary: Delete a reservation
  *     parameters:
  *       - in: path
