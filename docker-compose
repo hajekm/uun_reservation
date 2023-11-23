@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  reservation_server:
+    image: reservation-server
+    restart: always
+    labels:
+      - "traefik.port=3001"
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`reservations.echovo.cz`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+    ports:
+      - "3001:3001"
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: lopata
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      - PMA_ARBITRARY=1

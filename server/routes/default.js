@@ -25,7 +25,24 @@ function postAuthRedirect(req, res) {
     //delete req.redirectTo;
     res.redirect(redirectTo);
 }
-
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     googleOAuth:
+ *       type: oauth2
+ *       flows:
+ *         authorizationCode:
+ *           authorizationUrl: https://accounts.google.com/o/oauth2/v2/auth
+ *           tokenUrl: https://oauth2.googleapis.com/token
+ *           scopes: { }
+ *           x-client-id: 657224920436-sk7p2u3drrib3drg2ni29t1atggi90nf.apps.googleusercontent.com
+ */
+/**
+ * @swagger
+ * security:
+ *   - googleOAuth: []
+ */
 router.get('/auth', authMiddleware);
 
 router.get('/auth/callback', authCallbackMiddleware, postAuthRedirect);
