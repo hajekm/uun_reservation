@@ -10,7 +10,7 @@ const validator = require('../middleware/validator.js');
  *   - name: Users
  *     description: Operations related to users
  *
- * /userslist:
+ * /users/list:
  *   get:
  *     tags: [Users]
  *     summary: Get a list of all users
