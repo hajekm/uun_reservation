@@ -2,15 +2,12 @@ version: '2'
 
 services:
   reservation_server:
-    image: reservation-server
+    image: reservations-server-4
     restart: always
-    labels:
-      - "traefik.port=3001"
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`reservations.echovo.cz`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
     ports:
-      - "3001:3001"
+      - 3001:3001
+    environment:
+      -  NODE_ENV=googleAuthOverride
   db:
     image: mariadb:10.6
     restart: always
