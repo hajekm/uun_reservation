@@ -13,12 +13,12 @@ describe('Rooms API', () => {
 
     it('should create a new room', async () => {
         const newRoomData = {
-            room_number: 104, // Assign a unique room number
-            type_id: 2, // The type ID (this should correspond to a valid type in your room_type table)
+            room_number: 154,
+            type_id: 2,
             description: 'Deluxe double room with garden view',
-            price: 95.00, // Set the price for the room
-            beds: 2, // Number of beds in the room
-            options: 'Wi-Fi, TV, Garden View' // List of options available in the room
+            price: 95.00,
+            beds: 2,
+            options: 'Wi-Fi, TV, Garden View' 
         };
 
         const res = await request(app)

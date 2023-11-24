@@ -35,6 +35,25 @@ const reservationController = {
         }
     },
 
+    getReservationByUser: async (req, res) => {
+        try {
+            const userId = req.params.userId;
+            const reservations = await Reservation.findAll({
+                where: { user_id: userId }
+            });
+
+            if (reservations && reservations.length > 0) {
+                res.json(reservations);
+            } else {
+                res.status(404).send('No reservations found for the given user');
+            }
+        } catch (error) {
+            console.error('Error fetching reservations by user:', error);
+            res.status(500).send('An error occurred while fetching reservations');
+        }
+    },
+
+
     updateReservation: async (req, res) => {
         try {
             const [updated] = await Reservation.update(req.body, {

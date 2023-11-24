@@ -22,12 +22,18 @@ describe('Reservations API', () => {
     });
 
     it('should get a list of reservations', async () => {
-        const res = await request(app).get('/reservations/list'); // Adjust this endpoint
+        const res = await request(app).get('/reservations/list');
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get a reservation by ID', async () => {
-        const res = await request(app).get(`/reservations/${reservationId}`); // Adjust this endpoint
+        const res = await request(app).get(`/reservations/${reservationId}`);
+        expect(res.statusCode).toEqual(200);
+    });
+
+    it('should get reservations for a specific user', async () => {
+        const userId = 1;
+        const res = await request(app).get(`/reservations/user/${userId}`);
         expect(res.statusCode).toEqual(200);
     });
 

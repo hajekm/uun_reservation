@@ -17,6 +17,12 @@ const validator = require('../middleware/validator.js');
  *     responses:
  *       200:
  *         description: A list of reservations
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Reservation'
  *       401:
  *         description: Unauthorized access
  */
@@ -60,6 +66,10 @@ router.get('/list', isAdmin || isManager ,reservations.getAllReservations);
  *     responses:
  *       201:
  *         description: Reservation created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
  */
@@ -86,6 +96,10 @@ router.post('/create',
  *     responses:
  *       200:
  *         description: Reservation data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Reservation'
  *       404:
  *         description: Reservation not found
  *       401:
@@ -133,6 +147,10 @@ router.get('/:reservationId', ensureAuthenticated, reservations.getReservationBy
  *     responses:
  *       200:
  *         description: Reservation updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
  */
@@ -171,6 +189,10 @@ router.put('/:reservationId',
  *     responses:
  *       200:
  *         description: Reservation state updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
  */
@@ -203,5 +225,34 @@ router.put('/state/:reservationId',
  *         description: Unauthorized access
  */
 router.delete('/:reservationId', isAdmin, reservations.deleteReservation);
+
+/**
+ * @swagger
+ * /reservations/user/{userId}:
+ *   get:
+ *     summary: Get reservations for a specific user
+ *     tags: [Reservations]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The user ID to fetch reservations for
+ *     responses:
+ *       200:
+ *         description: List of reservations for the specified user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Reservation'
+ *       404:
+ *         description: No reservations found for the given user
+ *       500:
+ *         description: Server error
+ */
+router.get('/user/:userId', reservations.getReservationByUser);
 
 module.exports = router;

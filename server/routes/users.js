@@ -19,6 +19,12 @@ const validator = require('../middleware/validator.js');
  *     responses:
  *       200:
  *         description: List of all users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  *       401:
  *         description: Unauthorized
  *       500:
@@ -61,6 +67,10 @@ router.get('/list', isAdmin, user.getAllUsers);
  *     responses:
  *       200:
  *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       400:
  *         description: Validation error
  *       404:
@@ -93,6 +103,10 @@ router.put('/:userId',
  *     responses:
  *       200:
  *         description: Details of the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
  *       500:
@@ -131,6 +145,10 @@ router.get('/:userId', isManager || isAdmin, user.getUserById);
  *     responses:
  *       201:
  *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       400:
  *         description: Validation error
  *       500:

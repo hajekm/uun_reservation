@@ -17,6 +17,12 @@ const validator = require('../middleware/validator.js');
  *     responses:
  *       200:
  *         description: List of rooms
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Rooms'
  *       500:
  *         description: Internal server error
  */
@@ -64,6 +70,10 @@ router.get('/list', rooms.getAllRooms);
  *     responses:
  *       200:
  *         description: Room updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Room'
  *       400:
  *         description: Invalid input
  *       404:
@@ -94,6 +104,10 @@ router.put('/:roomId',
  *     responses:
  *       200:
  *         description: Details of the room
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Room'
  *       404:
  *         description: Room not found
  *       500:
@@ -140,6 +154,10 @@ router.get('/:roomId', rooms.getRoomById);
  *     responses:
  *       201:
  *         description: Room created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Room'
  *       400:
  *         description: Invalid input
  *       500:
