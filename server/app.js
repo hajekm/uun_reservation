@@ -29,7 +29,7 @@ app.use(cors());
 const swaggerSpec = swaggerJsdoc(config.swagger);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use((req, res, next) => {
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
     next();
 });
 
