@@ -6,6 +6,7 @@ import Header from "./routes/Header";
 import ErrorPage from "./error-page";
 import Users from "./routes/Users";
 import Home from "./routes/Home";
+import Rooms from "./routes/Rooms";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/users",
         element: <Users />,
+      },
+      {
+        path: "/rooms",
+        element: <Rooms />,
       },
     ],
   },

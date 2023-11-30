@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faUser, faBed } from "@fortawesome/free-solid-svg-icons";
 import { Menubar } from "primereact/menubar";
 import { Link, Outlet } from "react-router-dom";
 import "primereact/resources/themes/saga-orange/theme.css";
@@ -14,6 +14,11 @@ function Header() {
       label: "Users",
       icon: <FontAwesomeIcon className={"mr-3"} icon={faUser} />,
       url: "/users",
+    },
+    {
+      label: "Rooms",
+      icon: <FontAwesomeIcon className={"mr-3"} icon={faBed} />,
+      url: "/rooms",
     },
   ];
   const start = (
