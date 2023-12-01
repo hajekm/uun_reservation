@@ -24,7 +24,7 @@ describe('Rooms API', () => {
         const res = await request(app)
             .post('/rooms/create')
             .send(newRoomData);
-        roomId = JSON.parse(res.text).id;
+        roomId = res._body.data.id;
         expect(res.statusCode).toEqual(200);
     });
 

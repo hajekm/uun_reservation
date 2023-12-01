@@ -18,7 +18,7 @@ describe('Reservations API', () => {
             .send(newReservationData);
 
         expect(res.statusCode).toEqual(200);
-        reservationId = JSON.parse(res.text).id;
+        reservationId = res._body.data.id;
     });
 
     it('should get a list of reservations', async () => {

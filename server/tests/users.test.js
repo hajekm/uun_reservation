@@ -16,7 +16,7 @@ describe('Users API', () => {
             .send(newUser);
 
         expect(res.statusCode).toEqual(200);
-        userId = JSON.parse(res.text).id;
+        userId = res._body.data.id;
     });
 
     it('should get a list of users', async () => {
