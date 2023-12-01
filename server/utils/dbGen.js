@@ -28,7 +28,7 @@ mysql.createConnection({
     const createRoomsTableSql = `
         CREATE TABLE IF NOT EXISTS rooms (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            room_number INT NOT NULL,
+            room_number INT NOT NULL UNIQUE,
             type_id int,
             description VARCHAR(1000),
             price DECIMAL(10, 2),

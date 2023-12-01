@@ -34,12 +34,12 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Homepage');
+    res.send({message: 'Nothing to see here'});
 });
 
-app.use('/users', usersRoutes);
-app.use('/rooms', roomsRoutes);
-app.use('/reservations', cors(), reservationsRoutes);
-app.use('/', defaultRoutes);
+app.use(cors(), usersRoutes);
+app.use(cors(), roomsRoutes);
+app.use(cors(), reservationsRoutes);
+app.use(cors(), defaultRoutes);
 
 module.exports = app;

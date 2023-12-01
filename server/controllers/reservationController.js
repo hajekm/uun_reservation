@@ -4,20 +4,20 @@ const reservationController = {
     getAllReservations: async (req, res) => {
         try {
             const reservations = await Reservation.findAll();
-            res.json(reservations);
+            res.json({ data: reservations });
         } catch (error) {
             console.error('Error fetching reservations:', error);
-            res.status(500).send('An error occurred while fetching reservations');
+            res.status(500).json({ error: 'An error occurred while fetching reservations' });
         }
     },
 
     createReservation: async (req, res) => {
         try {
             const newReservation = await Reservation.create(req.body);
-            res.json(newReservation);
+            res.json({ data: newReservation });
         } catch (error) {
             console.error('Error creating reservation:', error);
-            res.status(500).send('An error occurred while creating the reservation');
+            res.status(500).json({ error: 'An error occurred while creating the reservation' });
         }
     },
 
@@ -25,13 +25,13 @@ const reservationController = {
         try {
             const reservation = await Reservation.findByPk(req.params.reservationId);
             if (reservation) {
-                res.json(reservation);
+                res.json({ data: reservation });
             } else {
-                res.status(404).send('Reservation not found');
+                res.status(404).json({ error: 'Reservation not found' });
             }
         } catch (error) {
             console.error('Error fetching reservation:', error);
-            res.status(500).send('An error occurred while fetching the reservation');
+            res.status(500).json({ error: 'An error occurred while fetching the reservation' });
         }
     },
 
@@ -43,16 +43,15 @@ const reservationController = {
             });
 
             if (reservations && reservations.length > 0) {
-                res.json(reservations);
+                res.json({ data: reservations });
             } else {
-                res.status(404).send('No reservations found for the given user');
+                res.status(404).json({ error: 'No reservations found for the given user' });
             }
         } catch (error) {
             console.error('Error fetching reservations by user:', error);
-            res.status(500).send('An error occurred while fetching reservations');
+            res.status(500).json({ error: 'An error occurred while fetching reservations' });
         }
     },
-
 
     updateReservation: async (req, res) => {
         try {
@@ -61,13 +60,13 @@ const reservationController = {
             });
             if (updated) {
                 const updatedReservation = await Reservation.findByPk(req.params.reservationId);
-                res.json(updatedReservation);
+                res.json({ data: updatedReservation });
             } else {
-                res.status(404).send('Reservation not found');
+                res.status(404).json({ error: 'Reservation not found' });
             }
         } catch (error) {
             console.error('Error updating reservation:', error);
-            res.status(500).send('An error occurred while updating the reservation');
+            res.status(500).json({ error: 'An error occurred while updating the reservation' });
         }
     },
 
@@ -79,13 +78,13 @@ const reservationController = {
             );
             if (updated) {
                 const updatedReservation = await Reservation.findByPk(req.params.reservationId);
-                res.json(updatedReservation);
+                res.json({ data: updatedReservation });
             } else {
-                res.status(404).send('Reservation not found');
+                res.status(404).json({ error: 'Reservation not found' });
             }
         } catch (error) {
             console.error('Error setting reservation state:', error);
-            res.status(500).send('An error occurred while setting reservation state');
+            res.status(500).json({ error: 'An error occurred while setting reservation state' });
         }
     },
 
@@ -95,13 +94,13 @@ const reservationController = {
                 where: { id: req.params.reservationId }
             });
             if (deleted) {
-                res.send(`Reservation with ID: ${req.params.reservationId} deleted`);
+                res.json({ message: `Reservation with ID: ${req.params.reservationId} deleted` });
             } else {
-                res.status(404).send('Reservation not found');
+                res.status(404).json({ error: 'Reservation not found' });
             }
         } catch (error) {
             console.error('Error deleting reservation:', error);
-            res.status(500).send('An error occurred while deleting the reservation');
+            res.status(500).json({ error: 'An error occurred while deleting the reservation' });
         }
     }
 };

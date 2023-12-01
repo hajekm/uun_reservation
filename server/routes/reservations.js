@@ -20,13 +20,25 @@ const validator = require('../middleware/validator.js');
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Reservation'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Reservation'
+ *       500:
+ *         description: An error occurred while fetching reservations
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       401:
  *         description: Unauthorized access
  */
-router.get('/list', isAdmin || isManager ,reservations.getAllReservations);
+router.get('/reservations/list', isAdmin || isManager, reservations.getAllReservations);
 
 /**
  * @swagger
@@ -39,41 +51,30 @@ router.get('/list', isAdmin || isManager ,reservations.getAllReservations);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - user_id
- *               - room_id
- *               - start_date
- *               - end_date
- *             properties:
- *               user_id:
- *                 type: integer
- *                 description: ID of the user
- *               room_id:
- *                 type: integer
- *                 description: ID of the room
- *               start_date:
- *                 type: string
- *                 format: date-time
- *                 description: Start date of the reservation
- *               end_date:
- *                 type: string
- *                 format: date-time
- *                 description: End date of the reservation
- *               state_id:
- *                 type: integer
- *                 description: ID of the reservation state
+ *             $ref: '#/components/schemas/Reservation'
  *     responses:
  *       201:
  *         description: Reservation created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Reservation'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
+ *       500:
+ *         description: An error occurred while creating the reservation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.post('/create',
+router.post('/reservations/create',
     validator.createReservationValidationRules,
     validator.validate,
     ensureAuthenticated,
@@ -99,13 +100,32 @@ router.post('/create',
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Reservation'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Reservation'
  *       404:
  *         description: Reservation not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: An error occurred while fetching the reservation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       401:
  *         description: Unauthorized access
  */
-router.get('/:reservationId', ensureAuthenticated, reservations.getReservationById);
+router.get('/reservations/:reservationId', ensureAuthenticated, reservations.getReservationById);
 
 /**
  * @swagger
@@ -150,11 +170,32 @@ router.get('/:reservationId', ensureAuthenticated, reservations.getReservationBy
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Reservation'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
+ *       404:
+ *         description: Reservation not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: An error occurred while updating the reservation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.put('/:reservationId',
+router.put('/reservations/:reservationId',
     validator.updateReservationValidationRules,
     validator.validate,
     ensureAuthenticated,
@@ -192,11 +233,32 @@ router.put('/:reservationId',
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Reservation'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
+ *       404:
+ *         description: Reservation not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: An error occurred while setting reservation state
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.put('/state/:reservationId',
+router.put('/reservations/state/:reservationId',
     validator.setReservationStateRules,
     validator.validate,
     isManager || isAdmin,
@@ -219,12 +281,35 @@ router.put('/state/:reservationId',
  *     responses:
  *       200:
  *         description: Reservation deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *       404:
  *         description: Reservation not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: An error occurred while deleting the reservation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       401:
  *         description: Unauthorized access
  */
-router.delete('/:reservationId', isAdmin, reservations.deleteReservation);
+router.delete('/reservations/:reservationId', isAdmin, reservations.deleteReservation);
 
 /**
  * @swagger
@@ -250,9 +335,23 @@ router.delete('/:reservationId', isAdmin, reservations.deleteReservation);
  *                 $ref: '#/components/schemas/Reservation'
  *       404:
  *         description: No reservations found for the given user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.get('/user/:userId', reservations.getReservationByUser);
+router.get('/reservations/user/:userId', reservations.getReservationByUser);
 
 module.exports = router;

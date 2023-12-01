@@ -4,20 +4,20 @@ const roomController = {
     getAllRooms: async (req, res) => {
         try {
             const rooms = await Room.findAll();
-            res.json(rooms);
+            res.json({ data: rooms });
         } catch (error) {
             console.error('Error fetching rooms:', error);
-            res.status(500).send('An error occurred while fetching rooms');
+            res.status(500).json({ error: 'An error occurred while fetching rooms' });
         }
     },
 
     createRoom: async (req, res) => {
         try {
             const newRoom = await Room.create(req.body);
-            res.json(newRoom);
+            res.json({ data: newRoom });
         } catch (error) {
             console.error('Error creating room:', error);
-            res.status(500).send('An error occurred while creating the room');
+            res.status(500).json({ error: 'An error occurred while creating the room' });
         }
     },
 
@@ -25,16 +25,15 @@ const roomController = {
         try {
             const room = await Room.findByPk(req.params.roomId);
             if (room) {
-                res.json(room);
+                res.json({ data: room });
             } else {
-                res.status(404).send('Room not found');
+                res.status(404).json({ error: 'Room not found' });
             }
         } catch (error) {
             console.error('Error fetching room:', error);
-            res.status(500).send('An error occurred while fetching the room');
+            res.status(500).json({ error: 'An error occurred while fetching the room' });
         }
     },
-
 
     updateRoom: async (req, res) => {
         try {
@@ -43,13 +42,13 @@ const roomController = {
             });
             if (updated) {
                 const updatedRoom = await Room.findByPk(req.params.roomId);
-                res.json(updatedRoom);
+                res.json({ data: updatedRoom });
             } else {
-                res.status(404).send('Room not found');
+                res.status(404).json({ error: 'Room not found' });
             }
         } catch (error) {
             console.error('Error updating room:', error);
-            res.status(500).send('An error occurred while updating the room');
+            res.status(500).json({ error: 'An error occurred while updating the room' });
         }
     },
 
@@ -59,13 +58,13 @@ const roomController = {
                 where: { id: req.params.roomId }
             });
             if (deleted) {
-                res.send(`Room with ID: ${req.params.roomId} deleted`);
+                res.json({ message: `Room with ID: ${req.params.roomId} deleted` });
             } else {
-                res.status(404).send('Room not found');
+                res.status(404).json({ error: 'Room not found' });
             }
         } catch (error) {
             console.error('Error deleting room:', error);
-            res.status(500).send('An error occurred while deleting the room');
+            res.status(500).json({ error: 'An error occurred while deleting the room' });
         }
     }
 };

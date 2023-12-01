@@ -22,15 +22,25 @@ const validator = require('../middleware/validator.js');
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
  *       401:
  *         description: Unauthorized
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.get('/list', isAdmin, user.getAllUsers);
+router.get('/users/list', isAdmin, user.getAllUsers);
 
 /**
  * @swagger
@@ -70,15 +80,32 @@ router.get('/list', isAdmin, user.getAllUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
  *       400:
  *         description: Validation error
  *       404:
  *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.put('/:userId',
+router.put('/users/:userId',
     validator.updateUserValidationRules,
     validator.validate,
     isAdmin,
@@ -106,13 +133,30 @@ router.put('/:userId',
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.get('/:userId', isManager || isAdmin, user.getUserById);
+router.get('/users/:userId', isManager || isAdmin, user.getUserById);
 
 /**
  * @swagger
@@ -148,13 +192,23 @@ router.get('/:userId', isManager || isAdmin, user.getUserById);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
  *       400:
  *         description: Validation error
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.post('/create',
+router.post('/users/create',
     validator.createUserValidationRules,
     validator.validate,
     isAdmin,
@@ -179,11 +233,32 @@ router.post('/create',
  *     responses:
  *       200:
  *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *       404:
  *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.delete('/:userId', isAdmin, user.deleteUser);
+router.delete('/users/:userId', isAdmin, user.deleteUser);
 
 module.exports = router;

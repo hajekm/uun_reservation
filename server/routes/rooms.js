@@ -20,13 +20,23 @@ const validator = require('../middleware/validator.js');
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Rooms'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Room'
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.get('/list', rooms.getAllRooms);
+router.get('/rooms/list', rooms.getAllRooms);
 
 /**
  * @swagger
@@ -46,42 +56,39 @@ router.get('/list', rooms.getAllRooms);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               room_number:
- *                 type: integer
- *                 description: Number of the room
- *               type_id:
- *                 type: integer
- *                 description: ID of the room type
- *               description:
- *                 type: string
- *                 description: Description of the room
- *               price:
- *                 type: number
- *                 format: float
- *                 description: Price of the room
- *               beds:
- *                 type: integer
- *                 description: Number of beds in the room
- *               options:
- *                 type: string
- *                 description: Additional options for the room
+ *             $ref: '#/components/schemas/Room'
  *     responses:
  *       200:
  *         description: Room updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Room'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Room'
  *       400:
  *         description: Invalid input
  *       404:
  *         description: Room not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.put('/:roomId',
+router.put('/rooms/:roomId',
     validator.updateRoomValidationRules,
     validator.validate,
     isAdmin,
@@ -99,7 +106,7 @@ router.put('/:roomId',
  *         name: roomId
  *         required: true
  *         schema:
- *           type: string
+ *           type: integer
  *         description: Unique ID of the room
  *     responses:
  *       200:
@@ -107,13 +114,30 @@ router.put('/:roomId',
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Room'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Room'
  *       404:
  *         description: Room not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.get('/:roomId', rooms.getRoomById);
+router.get('/rooms/:roomId', rooms.getRoomById);
 
 /**
  * @swagger
@@ -126,44 +150,30 @@ router.get('/:roomId', rooms.getRoomById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - room_number
- *               - description
- *               - price
- *             properties:
- *               room_number:
- *                 type: integer
- *                 description: Number of the room
- *               type_id:
- *                 type: integer
- *                 description: ID of the room type
- *               description:
- *                 type: string
- *                 description: Description of the room
- *               price:
- *                 type: number
- *                 format: float
- *                 description: Price of the room
- *               beds:
- *                 type: integer
- *                 description: Number of beds in the room
- *               options:
- *                 type: string
- *                 description: Additional options for the room
+ *             $ref: '#/components/schemas/Room'
  *     responses:
  *       201:
  *         description: Room created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Room'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/Room'
  *       400:
  *         description: Invalid input
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.post('/create',
+router.post('/rooms/create',
     validator.createRoomValidationRules,
     validator.validate,
     isAdmin,
@@ -181,16 +191,37 @@ router.post('/create',
  *         name: roomId
  *         required: true
  *         schema:
- *           type: string
+ *           type: integer
  *         description: Unique ID of the room
  *     responses:
  *       200:
  *         description: Room deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *       404:
  *         description: Room not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  *       500:
  *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
-router.delete('/:roomId', isAdmin, rooms.deleteRoom);
+router.delete('/rooms/:roomId', isAdmin, rooms.deleteRoom);
 
 module.exports = router;
