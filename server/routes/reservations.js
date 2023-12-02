@@ -20,12 +20,9 @@ const validator = require('../middleware/validator.js');
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Reservation'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Reservation'
  *       500:
  *         description: An error occurred while fetching reservations
  *         content:
@@ -58,10 +55,7 @@ router.get('/reservations/list', isAdmin || isManager, reservations.getAllReserv
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   $ref: '#/components/schemas/Reservation'
+ *               $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
  *       500:
@@ -100,10 +94,7 @@ router.post('/reservations/create',
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   $ref: '#/components/schemas/Reservation'
+ *               $ref: '#/components/schemas/Reservation'
  *       404:
  *         description: Reservation not found
  *         content:
@@ -170,10 +161,7 @@ router.get('/reservations/:reservationId', ensureAuthenticated, reservations.get
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   $ref: '#/components/schemas/Reservation'
+ *               $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
  *       404:
@@ -233,10 +221,7 @@ router.put('/reservations/:reservationId',
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   $ref: '#/components/schemas/Reservation'
+ *               $ref: '#/components/schemas/Reservation'
  *       400:
  *         description: Validation error
  *       404:
@@ -329,10 +314,7 @@ router.delete('/reservations/:reservationId', isAdmin, reservations.deleteReserv
  *         description: List of reservations for the specified user
  *         content:
  *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Reservation'
+ *             $ref: '#/components/schemas/Reservation'
  *       404:
  *         description: No reservations found for the given user
  *         content:

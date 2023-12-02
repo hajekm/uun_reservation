@@ -5,7 +5,7 @@ const userController = {
     getAllUsers: async (req, res) => {
         try {
             const users = await User.findAll({ include: [UserRole] });
-            res.json({ data: users });
+            res.json(users);
         } catch (error) {
             console.error('Error fetching users:', error);
             res.status(500).json({ error: 'An error occurred while fetching users' });
@@ -15,7 +15,7 @@ const userController = {
     createUser: async (req, res) => {
         try {
             const newUser = await User.create(req.body);
-            res.json({ data: newUser });
+            res.json(newUser);
         } catch (error) {
             console.error('Error creating user:', error);
             res.status(500).json({ error: 'An error occurred while creating the user' });
@@ -26,7 +26,7 @@ const userController = {
         try {
             const user = await User.findByPk(req.params.userId);
             if (user) {
-                res.json({ data: user });
+                res.json(user);
             } else {
                 res.status(404).json({ error: 'User not found' });
             }
@@ -43,7 +43,7 @@ const userController = {
             });
             if (updated) {
                 const updatedUser = await User.findByPk(req.params.userId);
-                res.json({ data: updatedUser });
+                res.json(updatedUser);
             } else {
                 res.status(404).json({ error: 'User not found' });
             }

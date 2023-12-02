@@ -4,7 +4,7 @@ const reservationController = {
     getAllReservations: async (req, res) => {
         try {
             const reservations = await Reservation.findAll();
-            res.json({ data: reservations });
+            res.json(reservations);
         } catch (error) {
             console.error('Error fetching reservations:', error);
             res.status(500).json({ error: 'An error occurred while fetching reservations' });
@@ -14,7 +14,7 @@ const reservationController = {
     createReservation: async (req, res) => {
         try {
             const newReservation = await Reservation.create(req.body);
-            res.json({ data: newReservation });
+            res.json(newReservation);
         } catch (error) {
             console.error('Error creating reservation:', error);
             res.status(500).json({ error: 'An error occurred while creating the reservation' });
@@ -25,7 +25,7 @@ const reservationController = {
         try {
             const reservation = await Reservation.findByPk(req.params.reservationId);
             if (reservation) {
-                res.json({ data: reservation });
+                res.json(reservation);
             } else {
                 res.status(404).json({ error: 'Reservation not found' });
             }
@@ -43,7 +43,7 @@ const reservationController = {
             });
 
             if (reservations && reservations.length > 0) {
-                res.json({ data: reservations });
+                res.json(reservations);
             } else {
                 res.status(404).json({ error: 'No reservations found for the given user' });
             }
@@ -60,7 +60,7 @@ const reservationController = {
             });
             if (updated) {
                 const updatedReservation = await Reservation.findByPk(req.params.reservationId);
-                res.json({ data: updatedReservation });
+                res.json(updatedReservation);
             } else {
                 res.status(404).json({ error: 'Reservation not found' });
             }
@@ -78,7 +78,7 @@ const reservationController = {
             );
             if (updated) {
                 const updatedReservation = await Reservation.findByPk(req.params.reservationId);
-                res.json({ data: updatedReservation });
+                res.json(updatedReservation);
             } else {
                 res.status(404).json({ error: 'Reservation not found' });
             }
