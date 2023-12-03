@@ -6,7 +6,7 @@ import { useField } from "formik";
 const CookInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
-    <>
+    <div className="mb-1 mt-3">
       <span className="p-float-label">
         <InputText
           id={props.id}
@@ -24,7 +24,7 @@ const CookInput = ({ label, ...props }) => {
       ) : (
         <small className="p-error">&nbsp;</small>
       )}
-    </>
+    </div>
   );
 };
 

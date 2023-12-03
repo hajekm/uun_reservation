@@ -9,6 +9,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Button } from "primereact/button";
 import { FilterMatchMode } from "primereact/api";
 import { Tag } from "primereact/tag";
+import { ProgressSpinner } from "primereact/progressspinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUsers,
@@ -18,6 +19,7 @@ import {
   faSave,
   faTrashCan,
   faXmark,
+  faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import { ReservationService } from "../Service";
 import { Dialog } from "primereact/dialog";
@@ -25,27 +27,7 @@ import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import ReservationInput from "./ReservationInput";
 import ReservationSelect from "./ReservationSelect";
-
-const mockUsers = [
-  {
-    email: "user1@gmail.com",
-    created_at: "2023-05-19",
-    role: "Admin",
-    id: "acec32c6-9f83-4e77-9228-9dab18e49a67",
-  },
-  {
-    email: "user2@gmail.com",
-    created_at: "2023-05-19",
-    role: "User",
-    id: "a9ddb9d0-a32e-4c09-9dca-59a007d0b2d8",
-  },
-  {
-    email: "user3@gmail.com",
-    created_at: "2023-05-19",
-    role: "SuperUser",
-    id: "646b2a56-599c-43e0-b15a-518c7b166d2b",
-  },
-];
+import LoginForm from "./LoginForm";
 
 function UsersTable() {
   let emptyUser = {
@@ -55,7 +37,7 @@ function UsersTable() {
     created_at: "",
   };
 
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState([]);
   const [createUserDialog, setCreateUserDialog] = useState(false);
   const [deleteUserDialog, setDeleteUserDialog] = useState(false);
   const [user, setUser] = useState(emptyUser);
@@ -69,10 +51,22 @@ function UsersTable() {
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [roles] = useState(["SuperUser", "Admin", "User"]);
   const toast = useRef(null);
+  const [listUsersCall, setListUsersCall] = useState({
+    state: "pending",
+  });
 
-  // useEffect(() => {
-  //   ReservationService.getUsers().then((data) => setUsers(data));
-  // }, [users]);
+  useEffect(() => {
+    ReservationService.getUsers().then(async (response) => {
+      const responseJson = await response;
+      if (response.status === 401) {
+        setListUsersCall({ state: "auth", error: responseJson });
+      } else if (response.status >= 500) {
+        setListUsersCall({ state: "error", error: responseJson });
+      }
+      setListUsersCall({ state: "success" });
+      setUsers(responseJson);
+    });
+  }, []);
 
   const deleteUser = () => {
     let _users = users.filter((val) => val.id !== user.id);
@@ -205,7 +199,11 @@ function UsersTable() {
   );
   const roleBodyTemplate = (user) => {
     return (
-      <Tag value={user.role} rounded severity={getSeverity(user.role)}></Tag>
+      <Tag
+        value={user.UserRole.name}
+        rounded
+        severity={getSeverity(user.UserRole.name)}
+      ></Tag>
     );
   };
 
@@ -278,6 +276,29 @@ function UsersTable() {
     </React.Fragment>
   );
 
+  if (listUsersCall.state === "pending") {
+    return (
+      <div className="flex flex-wrap gap-2 align-items-center mt-8 justify-content-center">
+        <ProgressSpinner />
+      </div>
+    );
+  }
+  if (listUsersCall.state === "error") {
+    return (
+      <div>
+        <FontAwesomeIcon
+          icon={faCircleExclamation}
+          className={"mt-3"}
+          size={"4x"}
+        />
+        <h2>{listUsersCall.error}</h2>
+      </div>
+    );
+  }
+  if (listUsersCall.state === "auth") {
+    return <LoginForm login={true} />;
+  }
+
   return (
     <div>
       <Toast ref={toast} />
@@ -306,6 +327,12 @@ function UsersTable() {
             header="ID"
             sortable
             style={{ minWidth: "12rem" }}
+          ></Column>
+          <Column
+            field="username"
+            header="Username"
+            sortable
+            style={{ minWidth: "16rem" }}
           ></Column>
           <Column
             field="email"
