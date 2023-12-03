@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=googleAuthOverride jest tests/* --detectOpenHandles",
+    "test": "cross-env NODE_ENV=AuthOverride jest tests/* --detectOpenHandles",
     "start": "node server.js",
     "generate": "node ./utils/dbGen.js"
   },
