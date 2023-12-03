@@ -25,6 +25,7 @@ function postAuthRedirect(req, res) {
     //delete req.redirectTo;
     res.redirect(redirectTo);
 }
+
 /**
  * @swagger
  * components:

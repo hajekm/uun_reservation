@@ -21,6 +21,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "sequelize": "^6.35.1",
+    "sequelize-paper-trail": "^3.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
   },

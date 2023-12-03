@@ -18,7 +18,7 @@ ReservationState.init({
     sequelize,
     modelName: 'ReservationState',
     tableName: 'reservation_state',
-    timestamps: false
+    timestamps: true
 });
 
 module.exports = ReservationState;

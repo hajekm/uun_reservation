@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
 const UserRole = require("./user_role");
+const Revision = require('./revision');
 
 class User extends Model { }
 
@@ -65,12 +66,19 @@ User.init({
     password: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    revision: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Revision,
+            key: 'id'
+        }
     }
 }, {
     sequelize,
     modelName: 'User',
     tableName: 'users',
-    timestamps: false 
+    timestamps: true 
 });
 
 User.belongsTo(UserRole, { foreignKey: 'role_id' });

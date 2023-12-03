@@ -19,7 +19,7 @@ UserRole.init({
     sequelize,
     modelName: 'UserRole',
     tableName: 'user_role',
-    timestamps: false
+    timestamps: true
 });
 
 

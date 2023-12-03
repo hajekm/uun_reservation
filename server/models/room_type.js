@@ -18,7 +18,7 @@ RoomType.init({
     sequelize,
     modelName: 'RoomType',
     tableName: 'room_type',
-    timestamps: false
+    timestamps: true
 });
 
 module.exports = RoomType;

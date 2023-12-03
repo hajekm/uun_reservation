@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const config = require('../config/config');
+const revisionModel = require('../models/user');
 
 const sequelize = new Sequelize(
     config.database.dbName,
@@ -13,6 +14,14 @@ const sequelize = new Sequelize(
     }
 );
 
+const options = {
+    revisionModel: revisionModel.modelName,
+    tableName: 'revisions'
+};
+const PaperTrail = require('sequelize-paper-trail').init(sequelize, options);
+PaperTrail.defineModels();
+
+sequelize.paperTrail = PaperTrail;
 sequelize.authenticate().then(() => {
 }).catch((err) => {
     console.log("Connection to db failed!");
