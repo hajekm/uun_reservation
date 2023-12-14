@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
+const Revision = require('./revision');
 
 class Room extends Model { }
 
@@ -64,12 +65,21 @@ Room.init({
     },
     options: {
         type: DataTypes.STRING
+    },
+    revision: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Revision,
+            key: 'id'
+        }
     }
 }, {
     sequelize,
     modelName: 'Room',
     tableName: 'rooms',
-    timestamps: false
+    timestamps: true
 });
+
+Room.Revision = Room.hasPaperTrail();
 
 module.exports = Room;

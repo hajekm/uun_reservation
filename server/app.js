@@ -4,6 +4,7 @@ const usersRoutes = require('./routes/users.js');
 const roomsRoutes = require('./routes/rooms.js');
 const defaultRoutes = require('./routes/default.js');
 const reservationsRoutes = require('./routes/reservations.js');
+const revisionsRoutes = require('./routes/revisions.js');
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
 app.use(cors(), usersRoutes);
 app.use(cors(), roomsRoutes);
 app.use(cors(), reservationsRoutes);
+app.use(cors(), revisionsRoutes);
 app.use(cors(), defaultRoutes);
 
 module.exports = app;

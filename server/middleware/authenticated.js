@@ -1,7 +1,7 @@
 function ensureAuthenticated(req, res, next) {
-    if (process.env.NODE_ENV === 'googleAuthOverride') {
+    if (process.env.NODE_ENV === 'AuthOverride') {
         return next();
-    } 
+    }
 
     if (req.isAuthenticated()) {
         return next();
@@ -11,7 +11,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 function isManager(req, res, next) {
-    if (process.env.NODE_ENV === 'googleAuthOverride') {
+    if (process.env.NODE_ENV === 'AuthOverride') {
         return next();
     }
     if (!req.isAuthenticated()) {
@@ -26,7 +26,7 @@ function isManager(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-    if (process.env.NODE_ENV === 'googleAuthOverride') {
+    if (process.env.NODE_ENV === 'AuthOverride') {
         return next();
     }
     if (!req.isAuthenticated()) {

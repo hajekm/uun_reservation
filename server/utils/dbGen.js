@@ -21,6 +21,9 @@ mysql.createConnection({
             username VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE,
             password VARCHAR(255),
+            revision INT,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (role_id) REFERENCES user_role(id)
         );
     `;
@@ -34,6 +37,9 @@ mysql.createConnection({
             price DECIMAL(10, 2),
             beds INT,
             options VARCHAR(255),
+            revision INT,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (type_id) REFERENCES room_type(id)
         );
     `;
@@ -45,34 +51,58 @@ mysql.createConnection({
             room_id INT,
             start_date DATE,
             end_date DATE,
-            state_id int,
+            state_id INT,
+            revision INT,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (room_id) REFERENCES rooms(id),
             FOREIGN KEY (state_id) REFERENCES reservation_state(id)
         );
     `;
 
+
     const createUserRoleTableSql = `
         CREATE TABLE IF NOT EXISTS user_role (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL UNIQUE
+            name VARCHAR(255) NOT NULL UNIQUE,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         );
     `;
 
     const createRoomTypeTableSql = `
         CREATE TABLE IF NOT EXISTS room_type (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL UNIQUE
+            name VARCHAR(255) NOT NULL UNIQUE,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         );
     `;
 
     const createReservationStateTableSql = `
         CREATE TABLE IF NOT EXISTS reservation_state (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL UNIQUE
+            name VARCHAR(255) NOT NULL UNIQUE,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         );
     `;
 
+    const createRevisionsTableSql = `
+        CREATE TABLE revisions (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            model VARCHAR(255) NOT NULL,
+            document JSON NOT NULL,
+            operation VARCHAR(255) NOT NULL,
+            documentId INT NOT NULL,
+            revision INT NOT NULL,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+    `;
+
+    await connection.query(createRevisionsTableSql);
     await connection.query(createUserRoleTableSql);
     await connection.query(createRoomTypeTableSql);
     await connection.query(createReservationStateTableSql);

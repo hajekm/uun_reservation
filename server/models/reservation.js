@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
+const Revision = require('./revision');
 
 class Reservation extends Model { }
 
@@ -30,6 +31,9 @@ class Reservation extends Model { }
  *         state_id:
  *           type: integer
  *           description: The state ID of the reservation
+ *         revisionId:
+ *           type: integer
+ *           description: The ID of the associated revision in the revisions table
  */
 Reservation.init({
     id: {
@@ -51,12 +55,21 @@ Reservation.init({
     },
     state_id: {
         type: DataTypes.INTEGER
+    },
+    revision: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Revision,
+            key: 'id'
+        }
     }
 }, {
     sequelize,
     modelName: 'Reservation',
     tableName: 'reservations',
-    timestamps: false
+    timestamps: true
 });
+
+Reservation.revision = Reservation.hasPaperTrail();
 
 module.exports = Reservation;
