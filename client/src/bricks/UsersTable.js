@@ -28,6 +28,8 @@ import { Form, Formik } from "formik";
 import ReservationInput from "./ReservationInput";
 import ReservationSelect from "./ReservationSelect";
 import LoginForm from "./LoginForm";
+import ErrorResponse from "./ErrorResponse";
+import Progress from "./Progress";
 
 function UsersTable() {
   let emptyUser = {
@@ -57,14 +59,28 @@ function UsersTable() {
 
   useEffect(() => {
     ReservationService.getUsers().then(async (response) => {
-      const responseJson = await response;
-      if (response.status === 401) {
-        setListUsersCall({ state: "auth", error: responseJson });
-      } else if (response.status >= 500) {
-        setListUsersCall({ state: "error", error: responseJson });
+      try {
+        const responseJson = await response.json();
+        switch (response.status) {
+          case 200: {
+            setListUsersCall({state: "success"});
+            setUsers(responseJson);
+            break;
+          }
+          case 401: {
+          console.log(response);
+          setListUsersCall({ state: "login" });
+          break;
+        }
+          default: {
+            console.log(response);
+            setListUsersCall({ state: "error", error: responseJson.message });
+            break;
+          }
+        }
+      } catch (error) {
+        setListUsersCall({ state: "error", error: error.message });
       }
-      setListUsersCall({ state: "success" });
-      setUsers(responseJson);
     });
   }, []);
 
@@ -147,20 +163,6 @@ function UsersTable() {
       </div>
     );
   };
-
-  const rightToolbarTemplate = () => (
-    <Dropdown
-      icon={<FontAwesomeIcon icon={faUsers} className="mr-1" />}
-      value={loggedUser}
-      onChange={(e) => {
-        setLoggedUser(e.value);
-      }}
-      options={users}
-      optionLabel="email"
-      placeholder="Log in"
-      className="w-full md:w-14rem"
-    />
-  );
 
   const actionBodyTemplate = (rowData) => {
     return (
@@ -295,141 +297,159 @@ function UsersTable() {
       </div>
     );
   }
-  if (listUsersCall.state === "auth") {
-    return <LoginForm login={true} />;
-  }
 
-  return (
-    <div>
-      <Toast ref={toast} />
-      <br />
-      <div className="card">
-        <Toolbar
-          className="mb-4"
-          start={leftToolbarTemplate}
-          end={rightToolbarTemplate}
-        />
-        <DataTable
-          value={users}
-          dataKey="id"
-          paginator
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="From {first} to {last} in total {totalRecords} records"
-          filters={filters}
-          filterDisplay="row"
-          globalFilter={globalFilter}
-          header={header}
-        >
-          <Column
-            field="id"
-            header="ID"
-            sortable
-            style={{ minWidth: "12rem" }}
-          ></Column>
-          <Column
-            field="username"
-            header="Username"
-            sortable
-            style={{ minWidth: "16rem" }}
-          ></Column>
-          <Column
-            field="email"
-            header="Email"
-            sortable
-            style={{ minWidth: "16rem" }}
-          ></Column>
-          <Column
-            field="role"
-            header="Role"
-            sortable
-            body={roleBodyTemplate}
-            style={{ minWidth: "12rem" }}
-            filter
-            showFilterMenu={false}
-            filterMenuStyle={{ width: "10rem" }}
-            filterElement={roleRowFilterTemplate}
-          ></Column>
-          <Column
-            body={actionBodyTemplate}
-            exportable={false}
-            style={{ minWidth: "12rem" }}
-          ></Column>
-        </DataTable>
-      </div>
-
-      <Dialog
-        visible={createUserDialog}
-        style={{ width: "32rem" }}
-        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        header={dialogHeader}
-        modal
-        className="p-fluid"
-        onHide={hideCreateUserDialog}
-      >
-        <Formik
-          initialValues={{
-            id: user.id,
-            email: user.email,
-            role: user.role,
-          }}
-          validationSchema={Yup.object({
-            email: Yup.string()
-              .email("Invalid email address")
-              .required("Required field"),
-            role: Yup.string()
-              .oneOf(["User", "Admin", "SuperUser"], "Unknown role")
-              .required("Required field"),
-          })}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              createUser(values);
-              setSubmitted(false);
-              setSubmitting(false);
-            }, 500);
-          }}
-        >
-          {(formik) => (
-            <div className="flex card justify-content-center">
-              <Form className="flex flex-column gap-2">
-                <ReservationInput id="email" name="email" label="Email" />
-                <ReservationSelect id="role" name="role" label="Role" />
-                <Button
-                  type="submit"
-                  severity="secondary"
-                  icon={<FontAwesomeIcon icon={faSave} className="mr-1" />}
-                  label="Save"
-                />
-              </Form>
+  // if (listUsersCall.state === "auth") {
+  //   return <LoginForm login={true} />;
+  // }
+  switch (listUsersCall.state) {
+    case "success":
+      return (
+          <div>
+            <Toast ref={toast}/>
+            <br/>
+            <div className="card">
+              <Toolbar
+                  className="mb-4"
+                  start={leftToolbarTemplate}
+              />
+              <DataTable
+                  value={users}
+                  dataKey="id"
+                  paginator
+                  rows={10}
+                  rowsPerPageOptions={[5, 10, 25]}
+                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                  currentPageReportTemplate="From {first} to {last} in total {totalRecords} records"
+                  filters={filters}
+                  filterDisplay="row"
+                  globalFilter={globalFilter}
+                  header={header}
+              >
+                <Column
+                    field="id"
+                    header="ID"
+                    sortable
+                    style={{minWidth: "12rem"}}
+                ></Column>
+                <Column
+                    field="username"
+                    header="Username"
+                    sortable
+                    style={{minWidth: "16rem"}}
+                ></Column>
+                <Column
+                    field="email"
+                    header="Email"
+                    sortable
+                    style={{minWidth: "16rem"}}
+                ></Column>
+                <Column
+                    field="role"
+                    header="Role"
+                    sortable
+                    body={roleBodyTemplate}
+                    style={{minWidth: "12rem"}}
+                    filter
+                    showFilterMenu={false}
+                    filterMenuStyle={{width: "10rem"}}
+                    filterElement={roleRowFilterTemplate}
+                ></Column>
+                <Column
+                    body={actionBodyTemplate}
+                    exportable={false}
+                    style={{minWidth: "12rem"}}
+                ></Column>
+              </DataTable>
             </div>
-          )}
-        </Formik>
-      </Dialog>
 
-      <Dialog
-        visible={deleteUserDialog}
-        style={{ width: "32rem" }}
-        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        header="Confirmation"
-        modal
-        footer={deleteUserDialogFooter}
-        onHide={hideDeleteUserDialog}
-      >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle mr-3"
-            style={{ fontSize: "2rem" }}
-          />
-          {user && (
-            <span>
+            <Dialog
+                visible={createUserDialog}
+                style={{width: "32rem"}}
+                breakpoints={{"960px": "75vw", "641px": "90vw"}}
+                header={dialogHeader}
+                modal
+                className="p-fluid"
+                onHide={hideCreateUserDialog}
+            >
+              <Formik
+                  initialValues={{
+                    id: user.id,
+                    email: user.email,
+                    role: user.role,
+                  }}
+                  validationSchema={Yup.object({
+                    email: Yup.string()
+                        .email("Invalid email address")
+                        .required("Required field"),
+                    role: Yup.string()
+                        .oneOf(["User", "Admin", "SuperUser"], "Unknown role")
+                        .required("Required field"),
+                  })}
+                  onSubmit={(values, {setSubmitting}) => {
+                    setTimeout(() => {
+                      createUser(values);
+                      setSubmitted(false);
+                      setSubmitting(false);
+                    }, 500);
+                  }}
+              >
+                {(formik) => (
+                    <div className="flex card justify-content-center">
+                      <Form className="flex flex-column gap-2">
+                        <ReservationInput id="email" name="email" label="Email"/>
+                        <ReservationSelect id="role" name="role" label="Role"/>
+                        <Button
+                            type="submit"
+                            severity="secondary"
+                            icon={<FontAwesomeIcon icon={faSave} className="mr-1"/>}
+                            label="Save"
+                        />
+                      </Form>
+                    </div>
+                )}
+              </Formik>
+            </Dialog>
+
+            <Dialog
+                visible={deleteUserDialog}
+                style={{width: "32rem"}}
+                breakpoints={{"960px": "75vw", "641px": "90vw"}}
+                header="Confirmation"
+                modal
+                footer={deleteUserDialogFooter}
+                onHide={hideDeleteUserDialog}
+            >
+              <div className="confirmation-content">
+                <i
+                    className="pi pi-exclamation-triangle mr-3"
+                    style={{fontSize: "2rem"}}
+                />
+                {user && (
+                    <span>
               Do you really want to delete <b>{user.email}</b>?
             </span>
-          )}
-        </div>
-      </Dialog>
-    </div>
-  );
+                )}
+              </div>
+            </Dialog>
+          </div>
+      );
+    case "error":
+      return (
+          <div>
+            <ErrorResponse
+                status={listUsersCall.status}
+                statusText={listUsersCall.statusText}
+                message={listUsersCall.message}
+            />
+          </div>
+      );
+    default:
+      return (
+          <div>
+            <Progress/>
+          </div>
+      );
+  }
 }
 
 export default UsersTable;

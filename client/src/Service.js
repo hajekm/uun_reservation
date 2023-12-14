@@ -1,12 +1,12 @@
 const url = "http://reservations.echovo.cz";
 
 export class ReservationService {
-  static getUser(id) {
-    return fetch(`${url}/user/${id}`).then((res) => res.json());
+  static getAuth() {
+    return fetch(`${url}/auth`);
   }
 
   static getUsers() {
-    return fetch(`${url}/users/list`).then((res) => res.json());
+    return fetch(`${url}/users/list`);
   }
 
   static deleteUser(id) {

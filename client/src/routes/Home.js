@@ -7,7 +7,7 @@ function Home() {
     <div className="flex grid m-5 justify-content-center grid">
       <div className="col-12">
         <h1>Welcome to reservation</h1>
-        <FontAwesomeIcon size={"3x"} icon={faPoo} />
+        {/* <FontAwesomeIcon size={"3x"} icon={faPoo} /> */}
       </div>
     </div>
   );
