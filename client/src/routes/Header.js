@@ -9,9 +9,9 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {Button} from "primereact/button";
-import {ReservationService} from "../Service";
 
 function Header() {
+    const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=http%3A%2F%2Freservations.echovo.cz%2Fauth%2Fcallback&scope=profile%20email&client_id=657224920436-sk7p2u3drrib3drg2ni29t1atggi90nf.apps.googleusercontent.com";
   const items = [
     {
       label: "Users",
@@ -36,11 +36,9 @@ function Header() {
             icon={<FontAwesomeIcon icon={faGoogle} className="mr-1" />}
             label="Sign in"
             onClick={(e) => {
-                ReservationService.getAuth().then(async (response) => {
-                const res = await response.json();
-                console.log(res);
-            });}
-        }
+
+                window.location.href = googleAuthUrl;
+            }}
         />
       </div>
   );
