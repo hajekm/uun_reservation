@@ -308,10 +308,6 @@ function UsersTable() {
             <Toast ref={toast}/>
             <br/>
             <div className="card">
-              <Toolbar
-                  className="mb-4"
-                  start={leftToolbarTemplate}
-              />
               <DataTable
                   value={users}
                   dataKey="id"

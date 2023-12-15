@@ -7,6 +7,8 @@ import ErrorPage from "./error-page";
 import Users from "./routes/Users";
 import Home from "./routes/Home";
 import Rooms from "./routes/Rooms";
+import {ThemeProvider} from "./bricks/ThemeProvider";
+import Calendar from "./routes/Calendar";
 
 const router = createBrowserRouter([
   {
@@ -26,12 +28,18 @@ const router = createBrowserRouter([
         path: "/rooms",
         element: <Rooms />,
       },
+      {
+        path: "/scheduler",
+        element: <Calendar />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <ThemeProvider>
     <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );
