@@ -138,9 +138,6 @@ router.get('/reservations/:reservationId', ensureAuthenticated, reservations.get
  *           schema:
  *             type: object
  *             properties:
- *               user_id:
- *                 type: integer
- *                 description: ID of the user
  *               room_id:
  *                 type: integer
  *                 description: ID of the room
@@ -152,9 +149,6 @@ router.get('/reservations/:reservationId', ensureAuthenticated, reservations.get
  *                 type: string
  *                 format: date-time
  *                 description: End date of the reservation
- *               state_id:
- *                 type: integer
- *                 description: ID of the reservation state
  *     responses:
  *       200:
  *         description: Reservation updated

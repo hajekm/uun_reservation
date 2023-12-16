@@ -61,10 +61,6 @@ const validate = (req, res, next) => {
 };
 
 const createReservationValidationRules = [
-    body('user_id')
-        .notEmpty().withMessage('User ID is required')
-        .isInt().withMessage('User ID must be an integer')
-        .toInt(),
     body('room_id')
         .notEmpty().withMessage('Room ID is required')
         .isInt().withMessage('Room ID must be an integer')
@@ -74,9 +70,7 @@ const createReservationValidationRules = [
         .isISO8601().withMessage('Start date must be a valid date'),
     body('end_date')
         .notEmpty().withMessage('End date is required')
-        .isISO8601().withMessage('End date must be a valid date'),
-    body('state_id').optional()
-        .isInt().withMessage('State ID must be an integer').trim()
+        .isISO8601().withMessage('End date must be a valid date')
 ];
 
 const updateReservationValidationRules = [
