@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const revision = require('../controllers/revisionController.js');
-const { ensureAuthenticated, isAdmin, isManager } = require('../middleware/authenticated.js');
+const {ensureAuthenticated, isAdmin, isManager} = require('../middleware/authenticated.js');
 
 /**
  * @swagger

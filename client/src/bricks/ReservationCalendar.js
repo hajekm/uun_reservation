@@ -1,20 +1,22 @@
-import {Dropdown} from "primereact/dropdown";
 import {classNames} from "primereact/utils";
 import React from "react";
 import {useField} from "formik";
+import {Calendar} from "primereact/calendar";
 
-const ReservationSelect = ({label, ...props}) => {
+const ReservationCalendar = ({label, ...props}) => {
     const [field, meta] = useField(props);
     return (
-        <>
+        <div className="mb-1 mt-3">
       <span className="p-float-label">
-        <Dropdown
-            inputId={props.id}
+        <Calendar
+            id={props.id}
             name={props.name}
-            options={props.options}
+            readOnlyInput
+            showIcon
+            minDate={new Date()}
             {...field}
             {...props}
-            className={classNames("w-full md:w-14rem", {
+            className={classNames({
                 "p-invalid": !!(meta.touched && meta.error),
             })}
         />
@@ -25,8 +27,8 @@ const ReservationSelect = ({label, ...props}) => {
             ) : (
                 <small className="p-error">&nbsp;</small>
             )}
-        </>
+        </div>
     );
 };
 
-export default ReservationSelect;
+export default ReservationCalendar;

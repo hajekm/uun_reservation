@@ -1,7 +1,8 @@
-const { Model, DataTypes } = require('sequelize');
+const {Model, DataTypes} = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
 
-class Revision extends Model { }
+class Revision extends Model {
+}
 
 Revision.init({
     id: {

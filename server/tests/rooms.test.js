@@ -18,7 +18,7 @@ describe('Rooms API', () => {
             description: 'Deluxe double room with garden view',
             price: 95.00,
             beds: 2,
-            options: 'Wi-Fi, TV, Garden View' 
+            options: 'Wi-Fi, TV, Garden View'
         };
 
         const res = await request(app)
@@ -29,7 +29,7 @@ describe('Rooms API', () => {
     });
 
     it('should get a room by ID', async () => {
-        
+
         const res = await request(app).get(`/rooms/${roomId}`);
         expect(res.statusCode).toEqual(200);
     });

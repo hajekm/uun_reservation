@@ -19,6 +19,6 @@ module.exports = {
                 version: '1.0.0',
             },
         },
-        apis: ['./routes/*.js','./models/*.js']
+        apis: ['./routes/*.js', './models/*.js']
     }
 };

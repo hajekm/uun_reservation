@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const rooms = require('../controllers/roomsController.js');
-const { ensureAuthenticated, isAdmin, isManager } = require('../middleware/authenticated.js');
+const {ensureAuthenticated, isAdmin, isManager} = require('../middleware/authenticated.js');
 const validator = require('../middleware/validator.js');
 
 /**

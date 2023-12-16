@@ -7,7 +7,7 @@ function authMiddleware(req, res, next) {
     if (process.env.NODE_ENV === 'googleAuthOverride') {
         return mockAuthMiddleware(req, res, next);
     } else {
-        return passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+        return passport.authenticate('google', {scope: ['profile', 'email']})(req, res, next);
     }
 }
 
@@ -16,7 +16,7 @@ function authCallbackMiddleware(req, res, next) {
         return mockAuthMiddleware(req, res, next);
     } else {
         req.returnTo = req.session.returnTo;
-        return passport.authenticate('google', { failureRedirect: '/login' })(req, res, next);
+        return passport.authenticate('google', {failureRedirect: '/login'})(req, res, next);
     }
 }
 

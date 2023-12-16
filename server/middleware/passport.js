@@ -4,14 +4,14 @@ const config = require('../config/config');
 
 module.exports = function (passport) {
     passport.use(new GoogleStrategy({
-        clientID: config.googleAuth.clientID,
-        clientSecret: config.googleAuth.clientSecret,
-        callbackURL: config.googleAuth.callbackURL
-    },
+            clientID: config.googleAuth.clientID,
+            clientSecret: config.googleAuth.clientSecret,
+            callbackURL: config.googleAuth.callbackURL
+        },
         async (accessToken, refreshToken, profile, done) => {
             try {
                 let user = await User.findOne({
-                    where: { email: profile.emails[0].value }
+                    where: {email: profile.emails[0].value}
                 });
 
                 if (!user) {
