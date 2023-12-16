@@ -6,11 +6,9 @@ let reservationId = 0;
 describe('Reservations API', () => {
     it('should create a new reservation', async () => {
         const newReservationData = {
-            user_id: 1,
             room_id: 1,
             start_date: '2024-01-01',
-            end_date: '2023-01-05',
-            state_id: 1
+            end_date: '2023-01-05'
         };
 
         const res = await request(app)

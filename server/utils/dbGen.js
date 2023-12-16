@@ -121,7 +121,6 @@ mysql.createConnection({
     `;
     await connection.query(insertUserRolesSql);
 
-    // Insert room types into the room_type table
     const insertRoomTypesSql = `
         INSERT INTO room_type (name) VALUES 
         ('Single'), 
@@ -151,6 +150,14 @@ mysql.createConnection({
     (1, 'Test user', 'testuser@test.test');
     `;
     await connection.query(insertTestUserSql);
+
+    const insertReservationSql = `
+    INSERT INTO reservations 
+    (user_id, room_id, start_date, end_date, state_id, revision)
+    VALUES
+    (1, 2, '2024-01-01', '2024-01-07', 1, 0);
+    `;
+    await connection.query(insertReservationSql);
 
     console.log("Database and tables created successfully");
 
