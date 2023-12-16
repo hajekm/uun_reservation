@@ -43,12 +43,28 @@ router.get('/reservations/list', isAdmin || isManager, reservations.getAllReserv
  *   post:
  *     tags: [Reservations]
  *     summary: Create a new reservation
- *     requestBody:
+  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Reservation'
+ *             type: object
+ *             required:
+ *               - room_id
+ *               - start_date
+ *               - end_date
+ *             properties:
+ *               room_id:
+ *                 type: integer
+ *                 description: The ID of the room for the reservation
+ *               start_date:
+ *                 type: string
+ *                 format: date
+ *                 description: The start date of the reservation in ISO 8601 format
+ *               end_date:
+ *                 type: string
+ *                 format: date
+ *                 description: The end date of the reservation in ISO 8601 format
  *     responses:
  *       201:
  *         description: Reservation created
@@ -138,9 +154,6 @@ router.get('/reservations/:reservationId', ensureAuthenticated, reservations.get
  *           schema:
  *             type: object
  *             properties:
- *               user_id:
- *                 type: integer
- *                 description: ID of the user
  *               room_id:
  *                 type: integer
  *                 description: ID of the room
@@ -152,9 +165,6 @@ router.get('/reservations/:reservationId', ensureAuthenticated, reservations.get
  *                 type: string
  *                 format: date-time
  *                 description: End date of the reservation
- *               state_id:
- *                 type: integer
- *                 description: ID of the reservation state
  *     responses:
  *       200:
  *         description: Reservation updated
