@@ -11,12 +11,12 @@ import {Tag} from "primereact/tag";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-  faCheck,
-  faCircleExclamation,
-  faCirclePlus,
-  faSave,
-  faTrashCan,
-  faXmark,
+    faCheck,
+    faCircleExclamation,
+    faCirclePlus,
+    faSave,
+    faTrashCan,
+    faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {ReservationService} from "../Service";
 import {Dialog} from "primereact/dialog";
