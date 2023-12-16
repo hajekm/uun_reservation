@@ -51,7 +51,7 @@ function UsersTable() {
   });
   const [globalFilter, setGlobalFilter] = useState("");
   const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [roles] = useState(["SuperUser", "Admin", "User"]);
+  const [roles, setRoles] = useState(["User", "Admin", "SuperUser"]);
   const toast = useRef(null);
   const [listUsersCall, setListUsersCall] = useState({
     state: "pending",
@@ -65,6 +65,11 @@ function UsersTable() {
           case 200: {
             setListUsersCall({state: "success"});
             setUsers(responseJson);
+            const _roles = Array.from(responseJson.reduce((roleSet, user) => {
+              roleSet.add(user.UserRole.name.charAt(0).toUpperCase() + user.UserRole.name.slice(1));
+              return roleSet;
+            }, new Set()));
+            setRoles(_roles);
             break;
           }
           case 401: {
@@ -85,15 +90,41 @@ function UsersTable() {
   }, []);
 
   const deleteUser = () => {
-    let _users = users.filter((val) => val.id !== user.id);
-    setUsers(_users);
+    ReservationService.deleteUser(user.id).then(async res => {
+      const response = await res.json()
+      switch (res.status) {
+        case 200: {
+          let _users = users.filter((val) => val.id !== user.id);
+          setUsers(_users);
+          toast.current.show({
+            severity: "success",
+            summary: "OK",
+            detail: `User ${user.email} has been deleted!`,
+            life: 3000,
+          });
+          break;
+        }
+        case 404: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Fail",
+            detail: `User ${user.email} not found!`,
+            life: 3000,
+          });
+          break;
+        }
+        default: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Fail",
+            detail: `${response.message}`,
+            life: 3000,
+          });
+          break;
+        }
+      }
+    })
     setDeleteUserDialog(false);
-    toast.current.show({
-      severity: "success",
-      summary: "OK",
-      detail: `User ${user.email} has been deleted!`,
-      life: 3000,
-    });
     setUser(emptyUser);
   };
 
@@ -167,14 +198,6 @@ function UsersTable() {
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Button
-          icon={<FontAwesomeIcon icon={faPencil} />}
-          rounded
-          outlined
-          className="mr-2"
-          severity="info"
-          onClick={() => editUser(rowData)}
-        />
         <Button
           icon={<FontAwesomeIcon icon={faTrashCan} />}
           rounded
@@ -319,6 +342,7 @@ function UsersTable() {
                   filters={filters}
                   filterDisplay="row"
                   globalFilter={globalFilter}
+                  stripedRows
                   header={header}
               >
                 <Column
@@ -340,8 +364,8 @@ function UsersTable() {
                     style={{minWidth: "16rem"}}
                 ></Column>
                 <Column
-                    field="role"
                     header="Role"
+                    field="role"
                     sortable
                     body={roleBodyTemplate}
                     style={{minWidth: "12rem"}}
@@ -435,7 +459,7 @@ function UsersTable() {
             <ErrorResponse
                 status={listUsersCall.status}
                 statusText={listUsersCall.statusText}
-                message={listUsersCall.message}
+                message={listUsersCall.error}
             />
           </div>
       );

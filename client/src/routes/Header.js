@@ -31,7 +31,7 @@ function Header() {
         {
             label: "Reservations",
             icon: <FontAwesomeIcon className={"mr-3"} icon={faCalendarDay} />,
-            url: "/scheduler",
+            url: "/",
         },
   ];
   const start = (

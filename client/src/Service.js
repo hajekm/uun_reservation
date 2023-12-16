@@ -10,9 +10,11 @@ export class ReservationService {
   }
 
   static deleteUser(id) {
-    return fetch(`${url}/user/${id}`, { method: "DELETE" }).then(
-      (res) => res.status
-    );
+    return fetch(`${url}/users/${id}`, { method: "DELETE" });
+  }
+
+  static getReservations() {
+    return fetch(`${url}/reservations/list`);
   }
 
   static loginUser(values) {
@@ -26,13 +28,13 @@ export class ReservationService {
   }
 
   static postUser(values) {
-    return fetch(`${url}/user`, {
+    return fetch(`${url}/users/create`, {
       method: "POST",
       body: JSON.stringify(values, null, 2),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
-    }).then((res) => res);
+    });
   }
 
   static putUser(values) {
