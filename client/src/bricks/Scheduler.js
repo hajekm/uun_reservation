@@ -225,9 +225,9 @@ function Scheduler() {
             return (
                 <div>
                     <ErrorResponse
-                        status={listUsersCall.status}
-                        statusText={listUsersCall.statusText}
-                        message={listUsersCall.error}
+                        status={listReservationsCall.status}
+                        statusText={listReservationsCall.statusText}
+                        message={listReservationsCall.error}
                     />
                 </div>
             );
