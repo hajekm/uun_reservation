@@ -1,9 +1,10 @@
-const { Model, DataTypes } = require('sequelize');
+const {Model, DataTypes} = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
 const UserRole = require("./user_role");
 const Revision = require('./revision');
 
-class User extends Model { }
+class User extends Model {
+}
 
 /**
  * @swagger
@@ -78,9 +79,9 @@ User.init({
     sequelize,
     modelName: 'User',
     tableName: 'users',
-    timestamps: true 
+    timestamps: true
 });
 
-User.belongsTo(UserRole, { foreignKey: 'role_id' });
+User.belongsTo(UserRole, {foreignKey: 'role_id'});
 
 module.exports = User;

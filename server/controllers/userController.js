@@ -4,11 +4,11 @@ const UserRole = require('../models/user_role');
 const userController = {
     getAllUsers: async (req, res) => {
         try {
-            const users = await User.findAll({ include: [UserRole] });
+            const users = await User.findAll({include: [UserRole]});
             res.json(users);
         } catch (error) {
             console.error('Error fetching users:', error);
-            res.status(500).json({ error: 'An error occurred while fetching users' });
+            res.status(500).json({error: 'An error occurred while fetching users'});
         }
     },
 
@@ -18,7 +18,7 @@ const userController = {
             res.json(newUser);
         } catch (error) {
             console.error('Error creating user:', error);
-            res.status(500).json({ error: 'An error occurred while creating the user' });
+            res.status(500).json({error: 'An error occurred while creating the user'});
         }
     },
 
@@ -28,44 +28,44 @@ const userController = {
             if (user) {
                 res.json(user);
             } else {
-                res.status(404).json({ error: 'User not found' });
+                res.status(404).json({error: 'User not found'});
             }
         } catch (error) {
             console.error('Error fetching user:', error);
-            res.status(500).json({ error: 'An error occurred while fetching the user' });
+            res.status(500).json({error: 'An error occurred while fetching the user'});
         }
     },
 
     updateUser: async (req, res) => {
         try {
             const [updated] = await User.update(req.body, {
-                where: { id: req.params.userId }
+                where: {id: req.params.userId}
             });
             if (updated) {
                 const updatedUser = await User.findByPk(req.params.userId);
                 res.json(updatedUser);
             } else {
-                res.status(404).json({ error: 'User not found' });
+                res.status(404).json({error: 'User not found'});
             }
         } catch (error) {
             console.error('Error updating user:', error);
-            res.status(500).json({ error: 'An error occurred while updating the user' });
+            res.status(500).json({error: 'An error occurred while updating the user'});
         }
     },
 
     deleteUser: async (req, res) => {
         try {
             const deleted = await User.destroy({
-                where: { id: req.params.userId }
+                where: {id: req.params.userId}
             });
             if (deleted) {
-                res.json({ message: `User with ID: ${req.params.userId} deleted` });
+                res.json({message: `User with ID: ${req.params.userId} deleted`});
             } else {
-                res.status(404).json({ error: 'User not found' });
+                res.status(404).json({error: 'User not found'});
             }
         } catch (error) {
             console.error('Error deleting user:', error);
-            res.status(500).json({ error: 'An error occurred while deleting the user' });
+            res.status(500).json({error: 'An error occurred while deleting the user'});
         }
     }
 };

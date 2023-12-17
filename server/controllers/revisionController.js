@@ -7,7 +7,7 @@ const revisionsController = {
             res.json(revisions);
         } catch (error) {
             console.error('Error fetching revisions:', error);
-            res.status(500).json({ error: 'An error occurred while fetching revisions' });
+            res.status(500).json({error: 'An error occurred while fetching revisions'});
         }
     }
 };

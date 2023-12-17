@@ -47,4 +47,4 @@ function isAdmin(req, res, next) {
     return res.redirect('/');
 }
 
-module.exports = { ensureAuthenticated, isAdmin, isManager };
+module.exports = {ensureAuthenticated, isAdmin, isManager};

@@ -1,8 +1,9 @@
-const { Model, DataTypes } = require('sequelize');
+const {Model, DataTypes} = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
 const User = require('./user');
 
-class UserRole extends Model { }
+class UserRole extends Model {
+}
 
 UserRole.init({
     id: {

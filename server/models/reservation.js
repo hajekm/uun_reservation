@@ -1,8 +1,9 @@
-const { Model, DataTypes } = require('sequelize');
+const {Model, DataTypes} = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
 const Revision = require('./revision');
 
-class Reservation extends Model { }
+class Reservation extends Model {
+}
 
 /**
  * @swagger

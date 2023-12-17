@@ -1,4 +1,3 @@
-
 module.exports = function mockAuthMiddleware(req, res, next) {
     req.user = {
         id: 1,

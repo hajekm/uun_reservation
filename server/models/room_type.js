@@ -1,7 +1,8 @@
-const { Model, DataTypes } = require('sequelize');
+const {Model, DataTypes} = require('sequelize');
 const sequelize = require("../middleware/sequelize.js");
 
-class RoomType extends Model { }
+class RoomType extends Model {
+}
 
 RoomType.init({
     id: {

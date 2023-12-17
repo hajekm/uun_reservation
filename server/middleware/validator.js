@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator');
+const {body, validationResult} = require('express-validator');
 
 const createUserValidationRules = [
     body('username').notEmpty().withMessage('Username is required'),
@@ -9,7 +9,7 @@ const createUserValidationRules = [
 const updateUserValidationRules = [
     body('username').optional().notEmpty().withMessage('Username cannot be empty'),
     body('email').optional().isEmail().withMessage('Must be a valid email address'),
-    body('password').optional().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+    body('password').optional().isLength({min: 6}).withMessage('Password must be at least 6 characters long')
 ];
 
 const createRoomValidationRules = [
@@ -22,7 +22,7 @@ const createRoomValidationRules = [
         .isString().withMessage('Description must be a string').trim(),
     body('price').notEmpty().withMessage('Price is required')
         .isDecimal().withMessage('Price must be a decimal number').toFloat(),
-    body('beds').optional().isInt({ min: 1 })
+    body('beds').optional().isInt({min: 1})
         .withMessage('Number of beds must be an integer greater than 0').toInt(),
     body('options').optional().isString().withMessage('Options must be a string').trim()
 ];
@@ -41,7 +41,7 @@ const updateRoomValidationRules = [
         .isDecimal().withMessage('Price must be a decimal number').toFloat(),
 
     body('beds').optional()
-        .isInt({ min: 1 }).withMessage('Number of beds must be an integer greater than 0').toInt(),
+        .isInt({min: 1}).withMessage('Number of beds must be an integer greater than 0').toInt(),
 
     body('options').optional().isString().withMessage('Options must be a string').trim()
 ];
@@ -53,7 +53,7 @@ const validate = (req, res, next) => {
     }
 
     const extractedErrors = [];
-    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
+    errors.array().map(err => extractedErrors.push({[err.param]: err.msg}));
     console.log(extractedErrors);
     return res.status(422).json({
         error: extractedErrors,
