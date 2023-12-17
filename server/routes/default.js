@@ -21,7 +21,7 @@ function authCallbackMiddleware(req, res, next) {
 }
 
 function postAuthRedirect(req, res) {
-    const redirectTo = req.returnTo || '/';
+    const redirectTo = 'localhost:3000'; //req.returnTo || 
     //delete req.redirectTo;
     res.redirect(redirectTo);
 }
