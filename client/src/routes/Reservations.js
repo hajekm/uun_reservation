@@ -1,10 +1,10 @@
 import React from "react";
-import UserReservation from "../bricks/UserReservations";
+import Scheduler from "../bricks/Scheduler";
 
 function Home() {
     return (
         <div>
-            <UserReservation/>
+            <Scheduler/>
         </div>
     );
 }

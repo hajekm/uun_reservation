@@ -1,12 +1,24 @@
-const url = "http://reservations.echovo.cz";
+const url = "http://localhost:3001";
 
 export class ReservationService {
-    static getAuth() {
-        return fetch(`${url}/auth`);
-    }
+    // static getAuth() {
+    //     return fetch(`${url}/auth`, {
+    //         method: 'GET',
+    //         credentials: 'include', // Important for cookies/session
+    //     });
+    // }
 
+    static getUserInfo() {
+        return fetch(`${url}/users/info`,{
+            method: 'GET',
+            credentials: 'include', // Important for cookies/session
+        });
+    }
     static getUsers() {
-        return fetch(`${url}/users/list`);
+        return fetch(`${url}/users/list`,{
+            method: 'GET',
+            credentials: 'include', // Important for cookies/session
+        });
     }
 
     static deleteUser(id) {
@@ -14,21 +26,17 @@ export class ReservationService {
     }
 
     static getReservations() {
-        return fetch(`${url}/reservations/list`);
+        return fetch(`${url}/reservations/list`,{
+            method: 'GET',
+            credentials: 'include', // Important for cookies/session
+        });
     }
 
     static getRooms() {
-        return fetch(`${url}/rooms/list`);
-    }
-
-    static loginUser(values) {
-        return fetch(`${url}/user/login`, {
-            method: "POST",
-            body: JSON.stringify(values, null, 2),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        }).then((res) => res);
+        return fetch(`${url}/rooms/list`,{
+            method: 'GET',
+            credentials: 'include', // Important for cookies/session
+        });
     }
 
     static postUser(values) {
@@ -42,13 +50,14 @@ export class ReservationService {
     }
 
     static postReservation(values) {
-        return fetch(`${url}/reservations/create`, {
-            method: "POST",
-            body: JSON.stringify(values, null, 2),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        });
+            return fetch(`${url}/reservations/create`, {
+                method: "POST",
+                body: JSON.stringify(values, null, 2),
+                credentials: 'include',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            });
     }
 
     static putUser(values) {

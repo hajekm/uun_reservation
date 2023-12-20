@@ -8,6 +8,7 @@ import Users from "./routes/Users";
 import Home from "./routes/Home";
 import Rooms from "./routes/Rooms";
 import {ThemeProvider} from "./bricks/ThemeProvider";
+import Reservations from "./routes/Reservations";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: "/rooms",
                 element: <Rooms/>,
+            },
+            {
+                path: "/reservations",
+                element: <Reservations/>,
             },
         ],
     },

@@ -15,6 +15,8 @@ import ReservationCalendar from "./ReservationCalendar";
 import {Toast} from "primereact/toast";
 import ErrorResponse from "./ErrorResponse";
 import Progress from "./Progress";
+import ReservationInput from "./ReservationInput";
+import LoginForm from "./LoginForm";
 
 function Scheduler() {
     const [rooms, setRooms] = useState([]);
@@ -207,6 +209,7 @@ function Scheduler() {
                                         <ReservationSelect id="room_id" name="room_id" options={rooms}
                                                            optionLabel="description"
                                                            optionValue="id" label="Room"/>
+                                        <ReservationInput id="email" name="email" label="Email"/>
                                         <Button
                                             type="submit"
                                             severity="secondary"
@@ -229,6 +232,12 @@ function Scheduler() {
                         statusText={listReservationsCall.statusText}
                         message={listReservationsCall.error}
                     />
+                </div>
+            );
+        case "login":
+            return (
+                <div>
+                    <LoginForm />
                 </div>
             );
         default:
