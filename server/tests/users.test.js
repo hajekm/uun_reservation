@@ -24,6 +24,11 @@ describe('Users API', () => {
         expect(res.statusCode).toEqual(200);
     });
 
+    it('should get authenticated user', async () => {
+        const res = await request(app).get('/users/getInfo');
+        expect(res.statusCode).toEqual(200);
+    });
+
     it('should get a user by ID', async () => {
         const res = await request(app).get(`/users/${userId}`);
         expect(res.statusCode).toEqual(200);

@@ -25,23 +25,23 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
-
-const swaggerSpec = swaggerJsdoc(config.swagger);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use((req, res, next) => {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     next();
 });
 
+const swaggerSpec = swaggerJsdoc(config.swagger);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
 app.get('/', (req, res) => {
     res.send({message: 'Nothing to see here'});
 });
-
-app.use(cors(), usersRoutes);
-app.use(cors(), roomsRoutes);
-app.use(cors(), reservationsRoutes);
-app.use(cors(), revisionsRoutes);
-app.use(cors(), defaultRoutes);
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(usersRoutes);
+app.use(roomsRoutes);
+app.use(reservationsRoutes);
+app.use(revisionsRoutes);
+app.use(defaultRoutes);
 
 module.exports = app;
