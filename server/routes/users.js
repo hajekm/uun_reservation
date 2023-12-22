@@ -108,6 +108,31 @@ router.put('/users/:userId',
 
 /**
  * @swagger
+ * /users/getInfo:
+ *   get:
+ *     tags: [Users]
+ *     summary: Get authenticated user
+ *     responses:
+ *       200:
+ *         description: Details of the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+router.get('/users/getInfo', ensureAuthenticated, user.getInfo);
+
+/**
+ * @swagger
  * /users/{userId}:
  *   get:
  *     tags: [Users]

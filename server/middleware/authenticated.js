@@ -12,8 +12,9 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    req.session.returnTo = req.originalUrl;
-    return res.redirect('/auth');
+
+    res.status(401).json({ error: 'User not authorized' });
+    return ;
 }
 
 function isManager(req, res, next) {
@@ -21,14 +22,15 @@ function isManager(req, res, next) {
         return next();
     }
     if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl;
-        return res.redirect('/auth');
+        res.status(401).json({ error: 'User not authorized' });
+        return;
     }
 
     if (req.user.role_id == 2) {
         return next();
     }
-    return res.redirect('/');
+    res.status(403).json({ error: 'User does not have access rights' });
+    return;
 }
 
 function isAdmin(req, res, next) {
@@ -36,15 +38,16 @@ function isAdmin(req, res, next) {
         return next();
     }
     if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl;
-        return res.redirect('/auth');
+        res.status(401).json({ error: 'User not authorized' });
+        return;
     }
 
     if (req.user.role_id == 1) {
         return next();
     }
 
-    return res.redirect('/');
+    res.status(403).json({ error: 'User does not have access rights' });
+    return;
 }
 
 module.exports = {ensureAuthenticated, isAdmin, isManager};
