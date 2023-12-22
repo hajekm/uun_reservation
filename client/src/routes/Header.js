@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBed, faBook, faCalendarDay, faMoon, faSun, faUser, faHome} from "@fortawesome/free-solid-svg-icons";
+import {faBed, faBook, faCalendarDay, faMoon, faSun, faUser} from "@fortawesome/free-solid-svg-icons";
 import {Menubar} from "primereact/menubar";
 import {Link, Outlet} from "react-router-dom";
 import "primereact/resources/primereact.min.css";
@@ -34,6 +34,11 @@ function Header() {
             label: "Rooms",
             icon: <FontAwesomeIcon className={"mr-3"} icon={faBed}/>,
             url: "/rooms",
+        },
+        {
+            label: "AuditLog",
+            icon: <FontAwesomeIcon className={"mr-3"} icon={faBook} />,
+            url: "/auditLog",
         },
         {
             label: "Reservations",

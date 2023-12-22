@@ -60,13 +60,43 @@ export class ReservationService {
             });
     }
 
-    static putUser(values) {
-        return fetch(`${url}/user/${values.id}`, {
-            method: "PUT",
-            body: JSON.stringify(values, null, 2),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        }).then((res) => res);
-    }
+  static putUser(values) {
+    return fetch(`${url}/user/${values.id}`, {
+      method: "PUT",
+      body: JSON.stringify(values, null, 2),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((res) => res);
+  }
+
+  //Matěj
+
+  static deleteRoom(id) {
+    return fetch(`${url}/rooms/${id}`, { method: "DELETE" });
+  }
+
+  static postRoom(values) {
+    return fetch(`${url}/rooms/create`, {
+      method: "POST",
+      body: JSON.stringify(values, null, 2),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+  }
+
+  static putRoom(values) {
+    return fetch(`${url}/rooms/${values.id}`, {
+      method: "PUT",
+      body: JSON.stringify(values, null, 2),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+  }
+
+  static getAuditLog() {
+    return fetch(`${url}/revisions/list`);
+  }
 }

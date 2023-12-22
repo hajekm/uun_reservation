@@ -9,31 +9,37 @@ import Home from "./routes/Home";
 import Rooms from "./routes/Rooms";
 import {ThemeProvider} from "./bricks/ThemeProvider";
 import Reservations from "./routes/Reservations";
+import { ThemeProvider } from "./bricks/ThemeProvider";
+import AuditLog from "./routes/AuditLog";
 
 const router = createBrowserRouter([
-    {
-        element: <Header/>,
-        errorElement: <ErrorPage/>,
-        children: [
-            {
-                path: "/",
-                element: <Home/>,
-                index: true,
-            },
-            {
-                path: "/users",
-                element: <Users/>,
-            },
-            {
-                path: "/rooms",
-                element: <Rooms/>,
-            },
-            {
-                path: "/reservations",
-                element: <Reservations/>,
-            },
-        ],
-    },
+  {
+    element: <Header />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+        index: true,
+      },
+      {
+        path: "/users",
+        element: <Users />,
+      },
+      {
+        path: "/rooms",
+        element: <Rooms />,
+      },
+      {
+        path: "/auditLog",
+        element: <AuditLog />,
+      },
+        {
+            path: "/reservations",
+            element: <Reservations/>,
+        },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
