@@ -1,10 +1,9 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faDoorOpen} from "@fortawesome/free-solid-svg-icons";
 import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {Dialog} from "primereact/dialog";
 import {Button} from "primereact/button";
-import {ReservationService} from "../Service";
 
 function LoginForm() {
     const [loginDialog, setLoginDialog] = useState(true);

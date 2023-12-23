@@ -237,7 +237,7 @@ function Scheduler() {
         case "login":
             return (
                 <div>
-                    <LoginForm />
+                    <LoginForm/>
                 </div>
             );
         default:
