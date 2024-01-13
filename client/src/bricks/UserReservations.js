@@ -16,6 +16,7 @@ import {faBed, faCheck, faMagnifyingGlass, faStamp, faTrashCan, faXmark} from "@
 import {Card} from "primereact/card";
 import {Dialog} from "primereact/dialog";
 import {Tag} from "primereact/tag";
+import { Divider } from 'primereact/divider';
 
 
 const mock = [
@@ -264,7 +265,7 @@ function UserReservation() {
     const typeBodyTemplate = (room) => {
         return (
             <Tag
-                value={room.type_id}
+                value={getType(room.type_id)}
                 rounded
                 severity={getSeverity(room.type_id)}
             ></Tag>
@@ -387,6 +388,7 @@ function UserReservation() {
                         )}
                     </Formik>
                     <DataView value={rooms} layout="grid" itemTemplate={getRoomCard}/>
+<Divider />
                     <DataTable
                         value={reservations}
                         dataKey="id"
@@ -395,10 +397,12 @@ function UserReservation() {
                         rowsPerPageOptions={[5, 10, 25]}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="From {first} to {last} in total {totalRecords} records"
+                        header="User's reservations"
                         // filters={filters}
-                        filterDisplay="row"
+                        // filterDisplay="row"
                         // globalFilter={globalFilter}
                         stripedRows
+                        className="mt-3"
                         // header={header}
                     >
                         <Column
