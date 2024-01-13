@@ -67,8 +67,8 @@ function Header() {
                 if (response.ok) {
                     setUser(resJson);
                     let _items = menuItems;
-                    for (let i = 2; i < _items.length; i++) {
-                        _items[i].visible = resJson.UserRole.name === "Admin";
+                    for (let i = 1; i < _items.length; i++) {
+                        _items[i].visible = resJson.UserRole.id > 2;
                     }
                     setMenuItems(_items)
                 }
