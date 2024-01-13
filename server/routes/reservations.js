@@ -43,7 +43,7 @@ router.get('/reservations/list', isAdmin || isManager, reservations.getAllReserv
  *   post:
  *     tags: [Reservations]
  *     summary: Create a new reservation
-  *     requestBody:
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:

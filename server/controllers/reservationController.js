@@ -13,7 +13,7 @@ const reservationController = {
 
     createReservation: async (req, res) => {
         try {
-            const newReservation = await Reservation.create({ ...req.body, userId: req.user.id, state_id: 1});
+            const newReservation = await Reservation.create({...req.body, userId: req.user.id, state_id: 1});
             res.json(newReservation);
         } catch (error) {
             console.error('Error creating reservation:', error);

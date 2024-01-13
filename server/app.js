@@ -44,7 +44,7 @@ app.use('/api/api-docs',
 app.get('/', (req, res) => {
     res.send({message: 'Nothing to see here'});
 });
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 app.use('/api', usersRoutes);
 app.use('/api', roomsRoutes);
 app.use('/api', reservationsRoutes);

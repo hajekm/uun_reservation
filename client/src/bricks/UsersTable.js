@@ -11,12 +11,12 @@ import {Tag} from "primereact/tag";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-  faCheck,
-  faCircleExclamation,
-  faCirclePlus,
-  faSave,
-  faTrashCan,
-  faXmark,
+    faCheck,
+    faCircleExclamation,
+    faCirclePlus,
+    faSave,
+    faTrashCan,
+    faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {ReservationService} from "../Service";
 import {Dialog} from "primereact/dialog";
@@ -26,6 +26,7 @@ import ReservationInput from "./ReservationInput";
 import ReservationSelect from "./ReservationSelect";
 import ErrorResponse from "./ErrorResponse";
 import Progress from "./Progress";
+import LoginForm from "./LoginForm";
 
 function UsersTable() {
     let emptyUser = {
@@ -43,7 +44,6 @@ function UsersTable() {
     const [submitted, setSubmitted] = useState(false);
     const [filters, setFilters] = useState({
         global: {value: null, matchMode: FilterMatchMode.CONTAINS},
-        role: {value: null, matchMode: FilterMatchMode.EQUALS},
     });
     const [globalFilter, setGlobalFilter] = useState("");
     const [globalFilterValue, setGlobalFilterValue] = useState("");
@@ -345,8 +345,6 @@ function UsersTable() {
                             rowsPerPageOptions={[5, 10, 25]}
                             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                             currentPageReportTemplate="From {first} to {last} in total {totalRecords} records"
-                            filters={filters}
-                            filterDisplay="row"
                             globalFilter={globalFilter}
                             stripedRows
                             header={header}
@@ -375,10 +373,6 @@ function UsersTable() {
                                 sortable
                                 body={roleBodyTemplate}
                                 style={{minWidth: "12rem"}}
-                                filter
-                                showFilterMenu={false}
-                                filterMenuStyle={{width: "10rem"}}
-                                filterElement={roleRowFilterTemplate}
                             ></Column>
                             <Column
                                 body={actionBodyTemplate}
@@ -467,6 +461,12 @@ function UsersTable() {
                         statusText={listUsersCall.statusText}
                         message={listUsersCall.error}
                     />
+                </div>
+            );
+        case "login":
+            return (
+                <div>
+                    <LoginForm/>
                 </div>
             );
         default:

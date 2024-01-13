@@ -14,11 +14,11 @@ const userController = {
 
     getInfo: async (req, res) => {
         try {
-            const users = await User.findByPk(req.user.id,{ include: [UserRole] });
+            const users = await User.findByPk(req.user.id, {include: [UserRole]});
             res.json(users);
         } catch (error) {
             console.error('Error fetching user:', error);
-            res.status(500).json({ error: 'An error occurred while fetching user' });
+            res.status(500).json({error: 'An error occurred while fetching user'});
         }
     },
 

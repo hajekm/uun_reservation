@@ -12,7 +12,7 @@ import {Form, Formik} from "formik";
 import ReservationCalendar from "./ReservationCalendar";
 import {Button} from "primereact/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBed, faCheck, faMagnifyingGlass, faStamp, faTrashCan, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {faBed, faCheck, faMagnifyingGlass, faTrashCan, faXmark} from "@fortawesome/free-solid-svg-icons";
 import {Card} from "primereact/card";
 import {Dialog} from "primereact/dialog";
 import {Tag} from "primereact/tag";
@@ -48,14 +48,14 @@ function UserReservation() {
                                 const reservationsRes = await response2.json();
                                 switch (response2.status) {
                                     case 200:
-                                    setReservations(reservationsRes);
-                                    setUserReservationsCall({state: "success"});
-                                    break;
-                                 case 404:
-                                     setUserReservationsCall({state: "success"});
-                                     break;
+                                        setReservations(reservationsRes);
+                                        setUserReservationsCall({state: "success"});
+                                        break;
+                                    case 404:
+                                        setUserReservationsCall({state: "success"});
+                                        break;
                                     default:
-                                    setUserReservationsCall({state: "error", error: reservationsRes.error});
+                                        setUserReservationsCall({state: "error", error: reservationsRes.error});
                                 }
                             });
                         } else {
@@ -104,10 +104,10 @@ function UserReservation() {
     }
 
     const getDateString = (date) => {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 
     const filterReservations = (values) => {
@@ -218,10 +218,18 @@ function UserReservation() {
                     rounded
                     outlined
                     severity="danger"
+                    visible={user.UserRole.id < 3}
                     onClick={() => confirmDeleteReservation(rowData)}
                 />
             </React.Fragment>
         );
+    };
+
+    const userTemplate = (rowData) => {
+        if (user.UserRole.name === 'User') {
+            return user.email;
+        }
+        return rowData.user_id
     };
 
     const typeBodyTemplate = (type) => {
@@ -290,9 +298,6 @@ function UserReservation() {
         <div className="flex flex-wrap justify-content-end gap-2">
             <Button
                 label="Create reservation"
-                // icon={
-                //     <FontAwesomeIcon className={"mr-1"} icon={faStamp}/>
-                // }
                 onClick={() => {
                     createReservation(r);
                 }}
@@ -317,7 +322,7 @@ function UserReservation() {
                             end_date: Yup.date()
                                 .required("Required field")
                                 .test('is-after-start', 'Date To must be after From date', function (value) {
-                                    const { start_date } = this.parent;
+                                    const {start_date} = this.parent;
                                     return value >= start_date;
                                 }),
                         })}
@@ -367,11 +372,9 @@ function UserReservation() {
                         ></Column>
                         <Column
                             header="User"
-                            field="user_id"
+                            body={userTemplate}
                             sortable
-                            // body={roleBodyTemplate}
                             style={{minWidth: "12rem"}}
-                            // filterElement={roleRowFilterTemplate}
                         ></Column>
                         <Column
                             header="Room"

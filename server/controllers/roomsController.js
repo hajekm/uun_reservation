@@ -1,6 +1,6 @@
 const Room = require('../models/room');
 const Reservation = require('../models/reservation');
-const { Op } = require("sequelize");
+const {Op} = require("sequelize");
 
 const roomController = {
     getAllRooms: async (req, res) => {
@@ -72,7 +72,7 @@ const roomController = {
 
     getAllAvailableRooms: async (req, res) => {
         try {
-            const { start, end } = req.query;
+            const {start, end} = req.query;
             const startDate = new Date(start);
             const endDate = new Date(end);
             const occupiedRooms = await Reservation.findAll({
@@ -90,8 +90,8 @@ const roomController = {
                         },
                         {
                             [Op.and]: [
-                                { start_date: { [Op.lte]: startDate } },
-                                { end_date: { [Op.gte]: endDate } }
+                                {start_date: {[Op.lte]: startDate}},
+                                {end_date: {[Op.gte]: endDate}}
                             ]
                         }
                     ]
@@ -112,7 +112,7 @@ const roomController = {
             res.json(availableRooms);
         } catch (error) {
             console.error('Error fetching available rooms:', error);
-            res.status(500).json({ error: 'An error occurred while fetching available rooms' });
+            res.status(500).json({error: 'An error occurred while fetching available rooms'});
         }
     }
 };
