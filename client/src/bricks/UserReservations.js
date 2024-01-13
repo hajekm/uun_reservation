@@ -121,9 +121,9 @@ function UserReservation() {
             if (response.ok) {
                 responseJson.map((room) => (room.type_id = getType(room.type_id)));
                 setRooms(responseJson);
-                if (rooms.length === 0) {
+                if (responseJson.length === 0) {
                     toast.current.show({
-                        severity: "warning",
+                        severity: "warn",
                         summary: "No Rooms",
                         detail: `We are sorry, but we don't have available rooms in this term`,
                         life: 3000,
@@ -237,7 +237,20 @@ function UserReservation() {
         if (user.UserRole.name === 'User') {
             return user.email;
         }
-        return rowData.user_id
+        ReservationService.getUser(rowData.user_id).then((res) => {
+            if (res.ok) {
+                const u = res.json();
+                return u.email;
+            }
+            return rowData.user_id
+        })
+
+    };
+
+    const roomTemplate = (rowData) => {
+        const currentRoom = rooms.filter(r => r.id === rowData.room_id);
+        return currentRoom.room_number
+
     };
 
     const typeBodyTemplate = (type) => {
@@ -385,12 +398,10 @@ function UserReservation() {
                             style={{minWidth: "12rem"}}
                         ></Column>
                         <Column
-                            header="Room"
-                            field="room_id"
+                            header="Room #"
                             sortable
-                            // body={roleBodyTemplate}
+                            body={roomTemplate}
                             style={{minWidth: "12rem"}}
-                            // filterElement={roleRowFilterTemplate}
                         ></Column>
                         <Column
                             field="start_date"
