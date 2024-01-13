@@ -249,8 +249,10 @@ function UserReservation() {
 
     const roomTemplate = (rowData) => {
         const currentRoom = rooms.find(r => r.id === rowData.room_id);
-        return currentRoom.room_number
-
+        if (currentRoom) {
+            return currentRoom.room_number
+        }
+        return rowData.room_id
     };
 
     const typeBodyTemplate = (type) => {
