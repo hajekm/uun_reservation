@@ -247,14 +247,6 @@ function UserReservation() {
 
     };
 
-    const roomTemplate = (rowData) => {
-        const currentRoom = rooms.find(r => r.id === rowData.room_id);
-        if (currentRoom) {
-            return currentRoom.room_number
-        }
-        return rowData.room_id
-    };
-
     const typeBodyTemplate = (type) => {
         return (
             <Tag
@@ -400,9 +392,9 @@ function UserReservation() {
                             style={{minWidth: "12rem"}}
                         ></Column>
                         <Column
-                            header="Room #"
+                            header="Room"
+                            field="room_id"
                             sortable
-                            body={roomTemplate}
                             style={{minWidth: "12rem"}}
                         ></Column>
                         <Column
