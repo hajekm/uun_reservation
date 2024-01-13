@@ -38,10 +38,10 @@ app.get('/', (req, res) => {
     res.send({message: 'Nothing to see here'});
 });
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-app.use(usersRoutes);
-app.use(roomsRoutes);
-app.use(reservationsRoutes);
-app.use(revisionsRoutes);
-app.use(defaultRoutes);
+app.use('/api', usersRoutes);
+app.use('/api', roomsRoutes);
+app.use('/api', reservationsRoutes);
+app.use('/api', revisionsRoutes);
+app.use('/api', defaultRoutes);
 
 module.exports = app;

@@ -5,8 +5,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY config/config.temp.js config/config.js
 
-RUN npm install
 COPY . .
+RUN npm install
 
 EXPOSE 3001
 

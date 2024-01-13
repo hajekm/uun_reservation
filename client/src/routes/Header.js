@@ -110,7 +110,7 @@ function Header() {
                     icon={<FontAwesomeIcon icon={faGoogle} className="mr-1"/>}
                     label="Sign in"
                     onClick={(e) => {
-                        window.location.href = 'http://reservations.echovo.cz/auth';
+                        window.location.href = '/api/auth';
                     }}
                 />
 

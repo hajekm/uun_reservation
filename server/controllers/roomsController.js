@@ -1,4 +1,6 @@
 const Room = require('../models/room');
+const Reservation = require('../models/reservation');
+const { Op } = require("sequelize");
 
 const roomController = {
     getAllRooms: async (req, res) => {
@@ -65,6 +67,52 @@ const roomController = {
         } catch (error) {
             console.error('Error deleting room:', error);
             res.status(500).json({error: 'An error occurred while deleting the room'});
+        }
+    },
+
+    getAllAvailableRooms: async (req, res) => {
+        try {
+            const { start, end } = req.query;
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            const occupiedRooms = await Reservation.findAll({
+                where: {
+                    [Op.or]: [
+                        {
+                            start_date: {
+                                [Op.between]: [startDate, endDate]
+                            }
+                        },
+                        {
+                            end_date: {
+                                [Op.between]: [startDate, endDate]
+                            }
+                        },
+                        {
+                            [Op.and]: [
+                                { start_date: { [Op.lte]: startDate } },
+                                { end_date: { [Op.gte]: endDate } }
+                            ]
+                        }
+                    ]
+                },
+                attributes: ['room_id']
+            });
+
+            const occupiedRoomIds = occupiedRooms.map(room => room.room_id);
+
+            const availableRooms = await Room.findAll({
+                where: {
+                    id: {
+                        [Op.notIn]: occupiedRoomIds
+                    }
+                }
+            });
+
+            res.json(availableRooms);
+        } catch (error) {
+            console.error('Error fetching available rooms:', error);
+            res.status(500).json({ error: 'An error occurred while fetching available rooms' });
         }
     }
 };

@@ -12,7 +12,7 @@ describe('Reservations API', () => {
         };
 
         const res = await request(app)
-            .post('/reservations/create')
+            .post('/api/reservations/create')
             .send(newReservationData);
 
         expect(res.statusCode).toEqual(200);
@@ -20,18 +20,18 @@ describe('Reservations API', () => {
     });
 
     it('should get a list of reservations', async () => {
-        const res = await request(app).get('/reservations/list');
+        const res = await request(app).get('/api/reservations/list');
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get a reservation by ID', async () => {
-        const res = await request(app).get(`/reservations/${reservationId}`);
+        const res = await request(app).get(`/api/reservations/${reservationId}`);
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get reservations for a specific user', async () => {
         const userId = 1;
-        const res = await request(app).get(`/reservations/user/${userId}`);
+        const res = await request(app).get(`/api/reservations/user/${userId}`);
         expect(res.statusCode).toEqual(200);
     });
 
@@ -42,7 +42,7 @@ describe('Reservations API', () => {
         };
 
         const res = await request(app)
-            .put(`/reservations/${reservationId}`)
+            .put(`/api/reservations/${reservationId}`)
             .send(updatedData);
 
         expect(res.statusCode).toEqual(200);
@@ -54,14 +54,14 @@ describe('Reservations API', () => {
         };
 
         const res = await request(app)
-            .put(`/reservations/state/${reservationId}`)
+            .put(`/api/reservations/state/${reservationId}`)
             .send(updatedData);
 
         expect(res.statusCode).toEqual(200);
     });
 
     it('should delete a reservation', async () => {
-        const res = await request(app).delete(`/reservations/${reservationId}`);
+        const res = await request(app).delete(`/api/reservations/${reservationId}`);
         expect(res.statusCode).toEqual(200);
     });
 });

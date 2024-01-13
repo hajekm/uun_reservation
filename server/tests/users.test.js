@@ -12,7 +12,7 @@ describe('Users API', () => {
         };
 
         const res = await request(app)
-            .post('/users/create')
+            .post('/api/users/create')
             .send(newUser);
 
         expect(res.statusCode).toEqual(200);
@@ -20,17 +20,17 @@ describe('Users API', () => {
     });
 
     it('should get a list of users', async () => {
-        const res = await request(app).get('/users/list');
+        const res = await request(app).get('/api/users/list');
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get authenticated user', async () => {
-        const res = await request(app).get('/users/getInfo');
+        const res = await request(app).get('/api/users/getInfo');
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get a user by ID', async () => {
-        const res = await request(app).get(`/users/${userId}`);
+        const res = await request(app).get(`/api/users/${userId}`);
         expect(res.statusCode).toEqual(200);
     });
 
@@ -41,14 +41,14 @@ describe('Users API', () => {
         };
 
         const res = await request(app)
-            .put(`/users/${userId}`)
+            .put(`/api/users/${userId}`)
             .send(updatedData);
 
         expect(res.statusCode).toEqual(200);
     });
 
     it('should delete a user', async () => {
-        const res = await request(app).delete(`/users/${userId}`);
+        const res = await request(app).delete(`/api/users/${userId}`);
         expect(res.statusCode).toEqual(200);
     });
 });
