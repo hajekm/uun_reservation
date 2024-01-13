@@ -27,7 +27,7 @@ function LoginForm() {
                             label="Sign In"
                             icon={<FontAwesomeIcon icon={faGoogle} className="mr-1"/>}
                             className="w-full"
-                            onClick={() => window.location.href = '/auth'}
+                            onClick={() => window.location.href = '/api/auth'}
                         />
                     </div>
 
