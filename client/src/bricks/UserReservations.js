@@ -16,58 +16,19 @@ import {faBed, faCheck, faMagnifyingGlass, faStamp, faTrashCan, faXmark} from "@
 import {Card} from "primereact/card";
 import {Dialog} from "primereact/dialog";
 import {Tag} from "primereact/tag";
-
-
-const mock = [
-    {
-        "id": 1,
-        "room_number": 563,
-        "type_id": 2,
-        "description": "TestID23",
-        "price": "500.00",
-        "beds": 3,
-        "options": "TestID2",
-        "revision": 1,
-        "createdAt": "2023-12-20T15:15:27.000Z",
-        "updatedAt": "2023-12-21T17:06:50.000Z"
-    },
-    {
-        "id": 2,
-        "room_number": 102,
-        "type_id": 2,
-        "description": "Double room with sea view",
-        "price": "80.00",
-        "beds": 2,
-        "options": "Wi-Fi, TV, Balcony",
-        "revision": null,
-        "createdAt": "2023-12-16T13:00:54.000Z",
-        "updatedAt": "2023-12-17T23:36:37.000Z"
-    },
-    {
-        "id": 181,
-        "room_number": 294,
-        "type_id": 3,
-        "description": "Some test room",
-        "price": "215.00",
-        "beds": 2,
-        "options": "TV included",
-        "revision": 1,
-        "createdAt": "2023-12-17T17:45:01.000Z",
-        "updatedAt": "2023-12-19T19:15:37.000Z"
-    },
-]
+import {Divider} from 'primereact/divider';
 
 function UserReservation() {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
     const [room, setRoom] = useState(null);
     const [startDate, setStartDate] = useState(d);
-    const [endDate, setEndDate] = useState();
-    const [rooms, setRooms] = useState(mock);
+    const [endDate, setEndDate] = useState(d);
+    const [rooms, setRooms] = useState([]);
     const [deleteReservationDialog, setDeleteReservationDialog] = useState(false);
     const [reservations, setReservations] = useState([]);
     const [user, setUser] = useState(null);
-    const [reservation, setReservation] = useState(null);
+    const [reservation, setReservation] = useState([]);
     const [createReservationDialog, setCreateReservationDialog] = useState(false);
     const [userReservationsCall, setUserReservationsCall] = useState({
         state: "pending",
@@ -76,55 +37,57 @@ function UserReservation() {
     const toast = useRef(null);
 
     useEffect(() => {
-        ReservationService.getReservations().then(async (response2) => {
-            const responseJson2 = await response2.json();
-            if (response2.ok) {
-                console.log(responseJson2);
-                setReservations(responseJson2);
-            }
+        try {
             ReservationService.getUserInfo().then(async (response) => {
-                try {
-                    const responseJson = await response.json();
-                    switch (response.status) {
-                        case 200: {
-                            setUserReservationsCall({state: "success"});
-                            setUser(responseJson);
-                            if (responseJson.UserRole.name !== "Admin") {
-                                ReservationService.getUserReservations(responseJson.id).then(async (response2) => {
-                                    const responseJson2 = await response2.json();
-                                    if (response2.ok) {
-                                        setReservations(responseJson2);
-                                    } else {
-                                        console.log(response2);
-                                        toast.current.show({
-                                            severity: "danger",
-                                            summary: "Error",
-                                            detail: `Cannot list previous reservations.`,
-                                            life: 3000,
-                                        });
-                                    }
-                                });
-                            }
-                            setUserReservationsCall({state: "success"});
-                            // setReservations(responseJson);
-                            break;
+                const userRes = await response.json();
+                switch (response.status) {
+                    case 200:
+                        setUser(userRes);
+                        if (userRes.UserRole.name === "Admin") {
+                            ReservationService.getReservations().then(async (response2) => {
+                                const reservationsRes = await response2.json();
+                                switch (response2.status) {
+                                    case 200:
+                                    setReservations(reservationsRes);
+                                    setUserReservationsCall({state: "success"});
+                                    break;
+                                 case 404:
+                                     setUserReservationsCall({state: "success"});
+                                     break;
+                                    default:
+                                    setUserReservationsCall({state: "error", error: reservationsRes.error});
+                                }
+                            });
+                        } else {
+                            ReservationService.getUserReservations(userRes.id).then(async (response2) => {
+                                const userReservationsRes = await response2.json();
+                                switch (response2.status) {
+                                    case 200:
+                                        setReservations(userReservationsRes);
+                                        setUserReservationsCall({state: "success"});
+                                        break;
+                                    case 404:
+                                        setUserReservationsCall({state: "success"});
+                                        break;
+                                    default:
+                                        setUserReservationsCall({state: "error", error: userReservationsRes.error});
+                                }
+                            });
                         }
-                        case 401: {
-                            console.log(response);
-                            setUserReservationsCall({state: "login"});
-                            break;
-                        }
-                        default: {
-                            console.log(response);
-                            setUserReservationsCall({state: "error", error: responseJson.message});
-                            break;
-                        }
-                    }
-                } catch (error) {
-                    setUserReservationsCall({state: "error", error: error.message});
+                        break;
+                    case 401:
+                        console.log(response);
+                        setUserReservationsCall({state: "login"});
+                        break;
+
+                    default:
+                        setUserReservationsCall({state: "error", error: userRes.message});
+                        break;
                 }
             });
-        });
+        } catch (error) {
+            setUserReservationsCall({state: "error", error: error.message});
+        }
     }, []);
 
     function getType(x) {
@@ -141,17 +104,16 @@ function UserReservation() {
     }
 
     const getDateString = (date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-        const day = String(date.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
     }
 
     const filterReservations = (values) => {
         setSubmitted(true);
-        values.start_date = getDateString(values.start_date);
-        values.end_date = getDateString(values.end_date);
+        values.start_date = getDateString(new Date(values.start_date));
+        values.end_date = getDateString(new Date(values.end_date));
         setStartDate(new Date(values.start_date));
         setEndDate(new Date(values.end_date));
         ReservationService.getAvailableRooms(values).then(async (response) => {
@@ -163,8 +125,8 @@ function UserReservation() {
                 console.log(response);
                 toast.current.show({
                     severity: "danger",
-                    summary: "Chyba",
-                    detail: `Něco se pokazilo ${responseJson.message}`,
+                    summary: "Error",
+                    detail: `Something went wrong ${responseJson.error}`,
                     life: 3000,
                 });
             }
@@ -199,7 +161,7 @@ function UserReservation() {
                     toast.current.show({
                         severity: "danger",
                         summary: "Fail",
-                        detail: `${response.message}`,
+                        detail: `${response.error}`,
                         life: 3000,
                     });
                     break;
@@ -212,7 +174,6 @@ function UserReservation() {
 
     const createReservation = (values) => {
         setSubmitted(true);
-        console.log(values);
         const res = {room_id: values.id, start_date: getDateString(startDate), end_date: getDateString(endDate)}
         ReservationService.postReservation(res).then(async (response) => {
             const responseJson = await response.json();
@@ -236,6 +197,8 @@ function UserReservation() {
                 });
             }
         });
+        setEndDate(d);
+        setRooms([]);
     }
 
     const confirmDeleteReservation = (data) => {
@@ -261,12 +224,12 @@ function UserReservation() {
         );
     };
 
-    const typeBodyTemplate = (room) => {
+    const typeBodyTemplate = (type) => {
         return (
             <Tag
-                value={room.type_id}
+                value={getType(type)}
                 rounded
-                severity={getSeverity(room.type_id)}
+                severity={getSeverity(type)}
             ></Tag>
         );
     };
@@ -274,13 +237,10 @@ function UserReservation() {
         switch (r) {
             case "Luxury":
                 return "success";
-
             case "Relax":
                 return "info";
-
             case "Presidential":
                 return "danger";
-
             default:
                 return "warn";
         }
@@ -290,7 +250,7 @@ function UserReservation() {
         return (
             <div className="card flex justify-content-center m-5">
                 <Card
-                    title={typeBodyTemplate(r)}
+                    title={typeBodyTemplate(r.type_id)}
                     subTitle={r.description}
                     footer={footer(r)}
                     header={header(r)}
@@ -330,9 +290,9 @@ function UserReservation() {
         <div className="flex flex-wrap justify-content-end gap-2">
             <Button
                 label="Create reservation"
-                icon={
-                    <FontAwesomeIcon className={"mr-1"} icon={faStamp}/>
-                }
+                // icon={
+                //     <FontAwesomeIcon className={"mr-1"} icon={faStamp}/>
+                // }
                 onClick={() => {
                     createReservation(r);
                 }}
@@ -355,11 +315,11 @@ function UserReservation() {
                                 .min(d, "Date must not be in the past")
                                 .required("Required field"),
                             end_date: Yup.date()
-                                .min(Yup.ref('start_date'), "Date must not be in the past")
                                 .required("Required field")
-                                .when(
-                                    "start_date",
-                                    (start_date, schema) => start_date && schema.min(d)),
+                                .test('is-after-start', 'Date To must be after From date', function (value) {
+                                    const { start_date } = this.parent;
+                                    return value >= start_date;
+                                }),
                         })}
                         onSubmit={(values, {setSubmitting}) => {
                             setTimeout(() => {
@@ -374,7 +334,7 @@ function UserReservation() {
                                 <Form className="flex gap-2">
                                     <ReservationCalendar id="start_date" name="start_date" label="From"
                                                          value={startDate}/>
-                                    <ReservationCalendar id="end_date" name="end_date" label="To"/>
+                                    <ReservationCalendar id="end_date" name="end_date" label="To" value={endDate}/>
                                     <Button
                                         type="submit"
                                         severity="success"
@@ -386,7 +346,8 @@ function UserReservation() {
                             </div>
                         )}
                     </Formik>
-                    <DataView value={rooms} layout="grid" itemTemplate={getRoomCard}/>
+                    <DataView emptyMessage=" " value={rooms} layout="grid" itemTemplate={getRoomCard}/>
+                    <Divider/>
                     <DataTable
                         value={reservations}
                         dataKey="id"
@@ -395,11 +356,8 @@ function UserReservation() {
                         rowsPerPageOptions={[5, 10, 25]}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="From {first} to {last} in total {totalRecords} records"
-                        // filters={filters}
-                        filterDisplay="row"
-                        // globalFilter={globalFilter}
+                        header="User's reservations"
                         stripedRows
-                        // header={header}
                     >
                         <Column
                             field="id"
