@@ -121,6 +121,14 @@ function UserReservation() {
             if (response.ok) {
                 responseJson.map((room) => (room.type_id = getType(room.type_id)));
                 setRooms(responseJson);
+                if (rooms.length === 0) {
+                    toast.current.show({
+                        severity: "warning",
+                        summary: "No Rooms",
+                        detail: `We are sorry, but we don't have available rooms in this term`,
+                        life: 3000,
+                    });
+                }
             } else {
                 console.log(response);
                 toast.current.show({
@@ -235,7 +243,7 @@ function UserReservation() {
     const typeBodyTemplate = (type) => {
         return (
             <Tag
-                value={getType(type)}
+                value={type}
                 rounded
                 severity={getSeverity(type)}
             ></Tag>
@@ -250,7 +258,7 @@ function UserReservation() {
             case "Presidential":
                 return "danger";
             default:
-                return "warn";
+                return "warning";
         }
     };
 
