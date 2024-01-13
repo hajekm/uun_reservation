@@ -14,40 +14,43 @@ import {ReservationService} from "../Service";
 import Cookies from 'universal-cookie';
 import {Tag} from "primereact/tag";
 
+const items = [
+    {
+        label: "Home",
+        icon: <FontAwesomeIcon className={"mr-3"} icon={faHome}/>,
+        url: "/",
+    },
+    {
+        label: "Rooms",
+        icon: <FontAwesomeIcon className={"mr-3"} icon={faBed}/>,
+        url: "/rooms",
+    },
+    {
+        label: "Users",
+        icon: <FontAwesomeIcon className={"mr-3"} icon={faUser}/>,
+        url: "/users",
+    },
+    {
+        label: "AuditLog",
+        icon: <FontAwesomeIcon className={"mr-3"} icon={faBook}/>,
+        url: "/auditLog",
+    },
+    {
+        label: "Reservations",
+        icon: <FontAwesomeIcon className={"mr-3"} icon={faCalendarDay}/>,
+        url: "/reservations",
+    },
+];
+
 function Header() {
     const [checked, setChecked] = useState(false)
     const [user, setUser] = useState(null)
     const {changeTheme} = useTheme();
+    const [menuItems, setMenuItems] = useState(items)
     const cookies = new Cookies();
 
 
-    const items = [
-        {
-            label: "Home",
-            icon: <FontAwesomeIcon className={"mr-3"} icon={faHome}/>,
-            url: "/",
-        },
-        {
-            label: "Rooms",
-            icon: <FontAwesomeIcon className={"mr-3"} icon={faBed}/>,
-            url: "/rooms",
-        },
-        {
-            label: "Users",
-            icon: <FontAwesomeIcon className={"mr-3"} icon={faUser}/>,
-            url: "/users",
-        },
-        {
-            label: "AuditLog",
-            icon: <FontAwesomeIcon className={"mr-3"} icon={faBook}/>,
-            url: "/auditLog",
-        },
-        {
-            label: "Reservations",
-            icon: <FontAwesomeIcon className={"mr-3"} icon={faCalendarDay}/>,
-            url: "/reservations",
-        },
-    ];
+
 
     useEffect(() => {
         const themeCookie = cookies.get('dark-theme');
@@ -63,10 +66,11 @@ function Header() {
                 const resJson = await response.json();
                 if (response.ok) {
                     setUser(resJson);
-                    for (let i = 2; i < items.length; i++) {
-                        items[i].visible = resJson.UserRole.name === "Admin";
-
+                    let _items = menuItems;
+                    for (let i = 2; i < _items.length; i++) {
+                        _items[i].visible = resJson.UserRole.name === "Admin";
                     }
+                    setMenuItems(_items)
                 }
             } catch (error) {
                 console.log(error);
@@ -121,7 +125,7 @@ function Header() {
 
     return (
         <div className="App">
-            <Menubar title="Reservation" model={items} start={start} end={end}/>
+            <Menubar title="Reservation" model={menuItems} start={start} end={end}/>
             <Outlet/>
         </div>
     );

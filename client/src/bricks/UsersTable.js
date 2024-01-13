@@ -78,9 +78,14 @@ function UsersTable() {
                         setListUsersCall({state: "login"});
                         break;
                     }
+                    case 403: {
+                        console.log(response);
+                        setListUsersCall({state: "error", error: responseJson.error});
+                        break;
+                    }
                     default: {
                         console.log(response);
-                        setListUsersCall({state: "error", error: responseJson.message});
+                        setListUsersCall({state: "error", error: responseJson.error});
                         break;
                     }
                 }
