@@ -31,7 +31,14 @@ app.use((req, res, next) => {
 });
 
 const swaggerSpec = swaggerJsdoc(config.swagger);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/api-docs',
+    (req, res, next) => {
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        next();
+    },
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec)
+);
 
 
 app.get('/', (req, res) => {

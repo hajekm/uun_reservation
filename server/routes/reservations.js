@@ -94,49 +94,6 @@ router.post('/reservations/create',
 /**
  * @swagger
  * /reservations/{reservationId}:
- *   get:
- *     tags: [Reservations]
- *     summary: Get a reservation by its ID
- *     parameters:
- *       - in: path
- *         name: reservationId
- *         required: true
- *         schema:
- *           type: string
- *         description: The reservation ID
- *     responses:
- *       200:
- *         description: Reservation data
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Reservation'
- *       404:
- *         description: Reservation not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *       500:
- *         description: An error occurred while fetching the reservation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *       401:
- *         description: Unauthorized access
- */
-router.get('/reservations/:reservationId', ensureAuthenticated, reservations.getReservationById);
-
-/**
- * @swagger
- * /reservations/{reservationId}:
  *   put:
  *     tags: [Reservations]
  *     summary: Update a reservation
@@ -345,5 +302,48 @@ router.delete('/reservations/:reservationId', isAdmin, reservations.deleteReserv
  *                   type: string
  */
 router.get('/reservations/user/:userId', reservations.getReservationByUser);
+
+/**
+ * @swagger
+ * /reservations/{reservationId}:
+ *   get:
+ *     tags: [Reservations]
+ *     summary: Get a reservation by its ID
+ *     parameters:
+ *       - in: path
+ *         name: reservationId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The reservation ID
+ *     responses:
+ *       200:
+ *         description: Reservation data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Reservation'
+ *       404:
+ *         description: Reservation not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: An error occurred while fetching the reservation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized access
+ */
+router.get('/reservations/:reservationId', ensureAuthenticated, reservations.getReservationById);
 
 module.exports = router;
