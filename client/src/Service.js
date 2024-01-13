@@ -1,4 +1,4 @@
-const url = "http://reservations.echovo.cz";
+const url = "http://reservations.echovo.cz/api";
 
 export class ReservationService {
     static getUserReservations(userId) {

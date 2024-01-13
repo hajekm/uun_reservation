@@ -1,0 +1,68 @@
+version: '2'
+
+services: 
+
+  back-end:
+    image: server-2
+    container_name: back-end
+    networks: 
+      - node-network
+    tty: true
+    ports: 
+      - "3001:3001"
+    depends_on:
+       - db
+    environment:
+      - NODE_ENV=googleAuthOverride
+      - NODE_ENV=AuthOverride
+
+  front-end:
+    image: client-1
+    container_name: front-end
+    working_dir: /usr/src/app
+    networks: 
+      - node-network
+    tty: true
+    ports: 
+      - "3000:3000"
+    command: npm run start
+
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: lopata
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - 3306:3306
+    volumes:
+      - db_data10:/var/lib/mysql
+    networks: 
+      - node-network
+      
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks: 
+      - node-network
+
+  nginx:
+    image: nginx-1
+    container_name: nginx
+    restart: always
+    tty: true
+    ports: 
+      - "3002:80"
+    networks: 
+      - node-network
+    depends_on:
+       - back-end
+       - front-end
+  
+networks: 
+  node-network:
+    driver: bridge
