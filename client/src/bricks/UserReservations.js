@@ -237,13 +237,13 @@ function UserReservation() {
         if (user.UserRole.name === 'User') {
             return user.email;
         }
-        ReservationService.getUser(rowData.user_id).then((res) => {
+        ReservationService.getUser(rowData.user_id).then(async (res) => {
             if (res.ok) {
-                const u = res.json();
+                const u = await res.json();
                 return u.email;
             }
-            return rowData.user_id
         })
+        return rowData.user_id
 
     };
 
