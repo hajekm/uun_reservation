@@ -126,7 +126,7 @@ function UserReservation() {
                         severity: "warn",
                         summary: "No Rooms",
                         detail: `We are sorry, but we don't have available rooms in this term`,
-                        life: 3000,
+                        life: 5000,
                     });
                 }
             } else {
@@ -248,7 +248,7 @@ function UserReservation() {
     };
 
     const roomTemplate = (rowData) => {
-        const currentRoom = rooms.filter(r => r.id === rowData.room_id);
+        const currentRoom = rooms.find(r => r.id === rowData.room_id);
         return currentRoom.room_number
 
     };
