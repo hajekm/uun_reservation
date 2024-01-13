@@ -66,11 +66,11 @@ const userController = {
 
     deleteUser: async (req, res) => {
         try {
-            const deleted = await User.destroy({
-                where: {id: req.params.userId}
-            });
             const deletedReservations = await Reservation.destroy({
                 where: { user_id: req.params.userId }
+            });
+            const deleted = await User.destroy({
+                where: { id: req.params.userId }
             });
             if (deleted) {
                 res.json({message: `User with ID: ${req.params.userId} deleted`});
