@@ -13,8 +13,8 @@ function ensureAuthenticated(req, res, next) {
         return next();
     }
 
-    res.status(401).json({ error: 'User not authorized' });
-    return ;
+    res.status(401).json({error: 'User not authorized'});
+    return;
 }
 
 function isManager(req, res, next) {
@@ -22,14 +22,14 @@ function isManager(req, res, next) {
         return next();
     }
     if (!req.isAuthenticated()) {
-        res.status(401).json({ error: 'User not authorized' });
+        res.status(401).json({error: 'User not authorized'});
         return;
     }
 
     if (req.user.role_id == 2) {
         return next();
     }
-    res.status(403).json({ error: 'User does not have access rights' });
+    res.status(403).json({error: 'User does not have access rights'});
     return;
 }
 
@@ -38,7 +38,7 @@ function isAdmin(req, res, next) {
         return next();
     }
     if (!req.isAuthenticated()) {
-        res.status(401).json({ error: 'User not authorized' });
+        res.status(401).json({error: 'User not authorized'});
         return;
     }
 
@@ -46,7 +46,7 @@ function isAdmin(req, res, next) {
         return next();
     }
 
-    res.status(403).json({ error: 'User does not have access rights' });
+    res.status(403).json({error: 'User does not have access rights'});
     return;
 }
 

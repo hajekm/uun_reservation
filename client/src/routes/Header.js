@@ -50,8 +50,6 @@ function Header() {
     const cookies = new Cookies();
 
 
-
-
     useEffect(() => {
         const themeCookie = cookies.get('dark-theme');
         if (!themeCookie) {
