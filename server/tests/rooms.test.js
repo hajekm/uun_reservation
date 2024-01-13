@@ -4,7 +4,7 @@ const app = require('../app');
 describe('Rooms API', () => {
     it('should get a list of rooms', async () => {
         const res = await request(app)
-            .get('/rooms/list').redirects(1);
+            .get('/api/rooms/list').redirects(1);
         expect(res.statusCode).toEqual(200);
     });
 
@@ -22,15 +22,14 @@ describe('Rooms API', () => {
         };
 
         const res = await request(app)
-            .post('/rooms/create')
+            .post('/api/rooms/create')
             .send(newRoomData);
         roomId = res._body.id;
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get a room by ID', async () => {
-
-        const res = await request(app).get(`/rooms/${roomId}`);
+        const res = await request(app).get(`/api/rooms/${roomId}`);
         expect(res.statusCode).toEqual(200);
     });
 
@@ -44,24 +43,24 @@ describe('Rooms API', () => {
         };
 
         const res = await request(app)
-            .put(`/rooms/${roomId}`)
+            .put(`/api/rooms/${roomId}`)
             .send(updatedData);
 
         expect(res.statusCode).toEqual(200);
     });
 
     it('should delete a room', async () => {
-        const res = await request(app).delete(`/rooms/${roomId}`);
+        const res = await request(app).delete(`/api/rooms/${roomId}`);
 
         expect(res.statusCode).toEqual(200);
     });
 
     it('should get a list of available rooms', async () => {
-        const startDate = '2024-01-01';
-        const endDate = '2024-01-10';
+        const startDate = '2024-01-13T00:00:00Z';
+        const endDate = '2024-01-14T00:00:00Z';
 
         const res = await request(app)
-            .get(`/rooms/available?startDate=${startDate}&endDate=${endDate}`);
+            .get(`/api/rooms/available?start=${startDate}&end=${endDate}`);
 
         expect(res.statusCode).toEqual(200);
         expect(Array.isArray(res.body)).toBeTruthy();

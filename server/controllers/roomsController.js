@@ -1,5 +1,6 @@
 const Room = require('../models/room');
-const sequelize = require("../middleware/sequelize.js");
+const Reservation = require('../models/reservation');
+const { Op } = require("sequelize");
 
 const roomController = {
     getAllRooms: async (req, res) => {
@@ -71,25 +72,26 @@ const roomController = {
 
     getAllAvailableRooms: async (req, res) => {
         try {
-            const { startDate, endDate } = req.query;
-
+            const { start, end } = req.query;
+            const startDate = new Date(start);
+            const endDate = new Date(end);
             const occupiedRooms = await Reservation.findAll({
                 where: {
-                    [sequelize.or]: [
+                    [Op.or]: [
                         {
                             start_date: {
-                                [sequelize.between]: [startDate, endDate]
+                                [Op.between]: [startDate, endDate]
                             }
                         },
                         {
                             end_date: {
-                                [sequelize.between]: [startDate, endDate]
+                                [Op.between]: [startDate, endDate]
                             }
                         },
                         {
-                            [sequelize.and]: [
-                                { start_date: { [sequelize.lte]: startDate } },
-                                { end_date: { [sequelize.gte]: endDate } }
+                            [Op.and]: [
+                                { start_date: { [Op.lte]: startDate } },
+                                { end_date: { [Op.gte]: endDate } }
                             ]
                         }
                     ]
@@ -102,7 +104,7 @@ const roomController = {
             const availableRooms = await Room.findAll({
                 where: {
                     id: {
-                        [sequelize.notIn]: occupiedRoomIds
+                        [Op.notIn]: occupiedRoomIds
                     }
                 }
             });
