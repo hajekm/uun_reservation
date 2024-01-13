@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Reservation = require('../models/reservation');
 const UserRole = require('../models/user_role');
 
 const userController = {
@@ -67,6 +68,9 @@ const userController = {
         try {
             const deleted = await User.destroy({
                 where: {id: req.params.userId}
+            });
+            const deletedReservations = await Reservation.destroy({
+                where: { user_id: req.params.userId }
             });
             if (deleted) {
                 res.json({message: `User with ID: ${req.params.userId} deleted`});
