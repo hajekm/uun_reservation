@@ -40,7 +40,7 @@ function RoomsTable() {
     email: "",
     UserRole: {
       name: "",
-      roleId: "",
+      id: "",
     },
     created_at: "",
   };
@@ -100,7 +100,7 @@ function RoomsTable() {
         switch (response.status) {
           case 200: {
             setUser(responseJson);
-            console.log(user);
+            // console.log(user);
             break;
           }
           case 401: {
@@ -177,11 +177,21 @@ function RoomsTable() {
           });
           break;
         }
+        case 403: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Fail",
+            detail: `Unsufficient rights`,
+            life: 3000,
+          });
+          break;
+        }
+
         default: {
           toast.current.show({
             severity: "danger",
             summary: "Fail",
-            detail: `${response.message}`,
+            detail: `${response.error}`,
             life: 3000,
           });
           break;
@@ -267,12 +277,21 @@ function RoomsTable() {
           setRoom(emptyRoom);
           break;
         }
+        case 403: {
+          toast.current.show({
+            severity: "danger",
+            summary: "Fail",
+            detail: `Unsufficient rights`,
+            life: 3000,
+          });
+          break;
+        }
 
         default: {
           toast.current.show({
             severity: "danger",
             summary: "Fail",
-            detail: `${response.message}`,
+            detail: `${response.error}`,
             life: 3000,
           });
           break;

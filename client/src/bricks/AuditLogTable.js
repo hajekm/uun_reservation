@@ -128,12 +128,12 @@ function AuditLogTable() {
             style={{ minWidth: "12rem" }}
           ></Column>
           <Column
-            field="user_email"
+            field="email"
             header="Done by"
             style={{ minWidth: "16rem" }}
           ></Column>
           <Column
-            field="user_role"
+            field="UserRole.name"
             header="Role"
             style={{ minWidth: "16rem" }}
           ></Column>
