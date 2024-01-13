@@ -55,4 +55,15 @@ describe('Rooms API', () => {
 
         expect(res.statusCode).toEqual(200);
     });
+
+    it('should get a list of available rooms', async () => {
+        const startDate = '2024-01-01';
+        const endDate = '2024-01-10';
+
+        const res = await request(app)
+            .get(`/rooms/available?startDate=${startDate}&endDate=${endDate}`);
+
+        expect(res.statusCode).toEqual(200);
+        expect(Array.isArray(res.body)).toBeTruthy();
+    });
 });

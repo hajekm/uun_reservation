@@ -212,4 +212,50 @@ router.post('/rooms/create',
  */
 router.delete('/rooms/:roomId', isAdmin, rooms.deleteRoom);
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Rooms
+ *     description: Operations related to rooms
+ *
+ * /rooms/available:
+ *   get:
+ *     tags: [Rooms]
+ *     summary: Get a list of available rooms
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Start date of the period
+ *       - in: query
+ *         name: endDate
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: End date of the period
+ *     responses:
+ *       200:
+ *         description: List of available rooms
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  $ref: '#/components/schemas/Room'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+router.get('/rooms/available', rooms.getAllAvailableRooms);
+
 module.exports = router;
