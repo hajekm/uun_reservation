@@ -1,6 +1,6 @@
 const Reservation = require('../models/reservation');
 const User = require('../models/user');
-const sendReservationEmail = require('../middleware/mailer');
+const { sendReservationEmail, sendCancelReservationEmail } = require('../middleware/mailer');
 
 const reservationController = {
     getAllReservations: async (req, res) => {
@@ -94,6 +94,9 @@ const reservationController = {
 
     deleteReservation: async (req, res) => {
         try {
+            const reservation = await Reservation.findByPk(req.params.reservationId);
+            const user = await User.findByPk(reservation.user_id);
+            sendReservationEmail(user, reservation.room_id, reservation.start_date, reservation.end_date);
             const deleted = await Reservation.destroy({
                 where: {id: req.params.reservationId}
             });
