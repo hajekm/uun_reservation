@@ -16,7 +16,7 @@ const reservationController = {
     createReservation: async (req, res) => {
         try {
             const newReservation = await Reservation.create({ ...req.body, user_id: req.user.id, state_id: 1 });
-            const user = User.findByPk(req.user.id);
+            const user = await User.findByPk(req.user.id);
             sendReservationEmail(user, newReservation);
             res.json(newReservation);
         } catch (error) {
