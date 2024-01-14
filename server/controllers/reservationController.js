@@ -1,4 +1,6 @@
 const Reservation = require('../models/reservation');
+const User = require('../models/user');
+const sendReservationEmail = require('../middleware/mailer');
 
 const reservationController = {
     getAllReservations: async (req, res) => {
@@ -13,7 +15,9 @@ const reservationController = {
 
     createReservation: async (req, res) => {
         try {
-            const newReservation = await Reservation.create({ ...req.body, user_id: req.user.id, state_id: 1});
+            const newReservation = await Reservation.create({ ...req.body, user_id: req.user.id, state_id: 1 });
+            const user = User.findByPk(req.user.id);
+            sendReservationEmail(user, newReservation);
             res.json(newReservation);
         } catch (error) {
             console.error('Error creating reservation:', error);

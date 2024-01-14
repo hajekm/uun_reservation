@@ -20,5 +20,9 @@ module.exports = {
             },
         },
         apis: ['./routes/*.js', './models/*.js']
+    },
+    mailer: {
+        username: '',
+        password: ''
     }
 };
