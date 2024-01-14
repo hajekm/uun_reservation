@@ -121,12 +121,12 @@ function UserReservation() {
             if (response.ok) {
                 responseJson.map((room) => (room.type_id = getType(room.type_id)));
                 setRooms(responseJson);
-                if (rooms.length === 0) {
+                if (responseJson.length === 0) {
                     toast.current.show({
-                        severity: "warning",
+                        severity: "warn",
                         summary: "No Rooms",
                         detail: `We are sorry, but we don't have available rooms in this term`,
-                        life: 3000,
+                        life: 5000,
                     });
                 }
             } else {
@@ -237,7 +237,14 @@ function UserReservation() {
         if (user.UserRole.name === 'User') {
             return user.email;
         }
+        ReservationService.getUser(rowData.user_id).then(async (res) => {
+            if (res.ok) {
+                const u = await res.json();
+                return u.email;
+            }
+        })
         return rowData.user_id
+
     };
 
     const typeBodyTemplate = (type) => {
@@ -388,9 +395,7 @@ function UserReservation() {
                             header="Room"
                             field="room_id"
                             sortable
-                            // body={roleBodyTemplate}
                             style={{minWidth: "12rem"}}
-                            // filterElement={roleRowFilterTemplate}
                         ></Column>
                         <Column
                             field="start_date"

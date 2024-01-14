@@ -22,6 +22,13 @@ export class ReservationService {
         });
     }
 
+    static getUser(userId) {
+        return fetch(`${url}/users/${userId}`, {
+            method: 'GET',
+            credentials: 'include', // Important for cookies/session
+        });
+    }
+
     static deleteUser(id) {
         return fetch(`${url}/users/${id}`, {method: "DELETE", credentials: 'include',});
     }
